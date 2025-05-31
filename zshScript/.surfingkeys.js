@@ -8,6 +8,8 @@ api.mapkey("<ctrl-y>", "Show me the money", function () {
 api.map("gt", "t");
 api.map("w", "d");
 api.map("t", "T");
+api.map("ao", ";di");
+api.map("su", ";U");
 api.map("C-1", "g0");
 // api.map("ss", "on");
 api.map("aa", "S");
@@ -318,13 +320,18 @@ api.mapkey("sj", "Open Wedding Nasheed", function () {
     "_blank",
   );
 });
+//
+//
 //t: isami music playlist
-api.mapkey("su", "isami music playlist", function () {
+//
+//
+//
+/* api.mapkey("su", "isami music playlist", function () {
   window.open(
     "https://www.youtube.com/watch?v=rL6qQ49hBlQ&list=PLXOE5SEv6NpDUSPNxCu1fFTfBi8HZDeJM",
     "_blank",
   );
-});
+}); */
 //t: Open 5 Nasheed
 api.mapkey("st", "Open 5 Nasheed", function () {
   window.open("https://www.youtube.com/watch?v=naWQJpsbPFM", "_blank");
