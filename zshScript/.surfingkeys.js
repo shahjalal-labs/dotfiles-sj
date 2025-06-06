@@ -69,6 +69,16 @@ api.mapkey("ax", "perplexity ai", function () {
   }
 });
 
+//w: opening gemini ai
+
+api.mapkey("gh", "gemini ai", function () {
+  if (window.location.hostname.includes("gemini")) {
+    window.location.href = "https://gemini.google.com/app";
+  } else {
+    window.open("https://gemini.google.com/app", "_blank");
+  }
+});
+
 //t: discord opening
 api.mapkey("so", "scribble l1b10", () => {
   window.open(

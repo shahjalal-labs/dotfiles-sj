@@ -86,8 +86,8 @@ return {
 					"tailwindcss",
 					"lua_ls",
 					"emmet_ls",
-					"prismals",
-					"pyright",
+					-- "prismals",
+					-- "pyright",
 				},
 			})
 		end,
