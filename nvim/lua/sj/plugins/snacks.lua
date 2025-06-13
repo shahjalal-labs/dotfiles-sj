@@ -1,7 +1,56 @@
 return {
 	"folke/snacks.nvim",
 	event = "VeryLazy",
-	opts = {},
+	opts = {
+		explorer = {
+			enabled = true, -- Enables the built-in file explorer feature from snacks.nvim
+		},
+
+		picker = {
+			enabled = true, -- Enables the picker UI for various search/navigation sources
+
+			sources = {
+				files = {
+					hidden = true, -- Show hidden files when using the file picker
+					ignored = false, -- Show ignored files (from .gitignore or similar)
+				},
+
+				explorer = {
+					hidden = true, -- Show hidden files in the file explorer
+					ignored = false, -- Show ignored files in the explorer
+				},
+
+				git_files = {
+					hidden = false, -- Include hidden files when picking Git-tracked files
+					ignored = false, -- Include ignored files when picking Git-tracked files
+				},
+
+				grep = {
+					hidden = false, -- Search in hidden files with live grep
+					ignored = false, -- Search in ignored files with live grep
+				},
+
+				grep_word = {
+					hidden = false, -- Grep the current word (or visual selection) including hidden files
+					ignored = false, -- Grep the current word including ignored files
+				},
+
+				grep_buffers = {
+					hidden = false, -- Grep open buffers including hidden files
+					ignored = false, -- Grep open buffers including ignored files
+				},
+			},
+		},
+		telescope = {
+			defaults = {
+				file_ignore_patterns = {
+					"node_modules", -- ignore all node_modules
+					"%.lock", -- ignore lockfiles
+					"%.min.js", -- optionally ignore minified js
+				},
+			},
+		},
+	},
 	keys = function()
 		local Snacks = require("snacks")
 

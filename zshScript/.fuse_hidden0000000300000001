@@ -253,8 +253,6 @@ backup_dotfiles() {
   rsync -a --delete ~/.config/yazi/ "$backup_dir/yazi/"
   rsync -a --delete ~/.config/hypr/ "$backup_dir/hypr/"
   rsync -a --delete /run/media/sj/developer/zshScript/ "$backup_dir/zshScript/"
-  rsync -a --delete /home/sj/.config/tmux/ "$backup_dir/tmuxModularized/"
-
 
   echo "All dotfiles have been backed up and synced to $backup_dir."
 }
