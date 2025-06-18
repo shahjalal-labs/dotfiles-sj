@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash  #p: copy backup files in backup dir 
 
 backup_dir="/run/media/sj/developer/allDotfilesBackupEndeavourOs"
 mkdir -p "$backup_dir"

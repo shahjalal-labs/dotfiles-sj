@@ -9,8 +9,9 @@ vim.api.nvim_set_keymap("i", "<M-r>", "return ", { noremap = true, silent = true
 --
 --
 --w:  insert const variable with alt-m
-vim.api.nvim_set_keymap("n", "<M-m>", "oconst variableName= ;<Esc>bb viwc", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<M-m>", "<C-o>o const variableName= ;<Esc>bb viwc", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<M-m>", "oconst = ;<Left><Left><Left>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "<M-m>", "<C-o>o const = ;<Left><Left><Left>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("i", "<M-m>", "<C-o>o const variableName= ;<Esc>bb viwc", { noremap = true, silent = true })
 --
 --
 --

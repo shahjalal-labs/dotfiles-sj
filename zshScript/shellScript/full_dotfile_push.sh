@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/bash 
+
+#p: copy backup files in backup dir & push to GitHub
 
 backup_dir="/run/media/sj/developer/allDotfilesBackupEndeavourOs"
 mkdir -p "$backup_dir"

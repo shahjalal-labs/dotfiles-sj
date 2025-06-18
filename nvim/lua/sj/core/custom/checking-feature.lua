@@ -345,3 +345,8 @@ return function()
 end
 
 -- go to the react parent component
+--
+--
+--
+-- Function to send deploy command to tmux pane 3
+-- Function to send a sequence of commands to tmux pane 3
