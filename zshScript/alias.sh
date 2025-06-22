@@ -30,6 +30,8 @@ alias ms="nmcli device disconnect enp0s20f0u1"
 alias mc="nmcli device connect enp0s20f0u1"
 
 alias de='nmcli device connect enp1s0'
+alias pu='paru -Syu'
+
 # alias alt="setxkbmap -option altwin:meta_alt"
 # alias fp="$(tmux ls | fzf | awk '{print $1}' | sed 's/://')"
 # alias ff ="$(  | fzf | awk '{print $1}' | sed 's/://')"
@@ -52,7 +54,10 @@ alias m="sudo systemctl start mongodb"
 alias s="nvim /run/media/sj/developer/zshScript/.surfingkeys.js"
 alias bd="bun dev"
 alias ba="bun add"
+alias bi="bun install"
+alias i="paru -S"
 alias nvl="NVIM_APPNAME=nvim-learn nvim"
+
 
 
 

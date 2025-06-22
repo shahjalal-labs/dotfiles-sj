@@ -308,6 +308,7 @@ vim.keymap.set("n", "<space>ac", CopyGitRemote, { desc = "Copy git remote URL to
 --
 --
 --
+--go to package.json file
 vim.keymap.set("n", "<leader>pp", function()
 	local package_json_path = vim.fn.findfile("package.json", ".;")
 	if package_json_path ~= "" then
@@ -316,3 +317,13 @@ vim.keymap.set("n", "<leader>pp", function()
 		print("No package.json file found in the current project.")
 	end
 end, { noremap = true, silent = true, desc = "Open package.json" })
+
+-- Search for index.css under the src directory, starting from the current directory
+vim.keymap.set("n", "<leader>fi", function()
+	local index_css_path = vim.fn.findfile("src/index.css", ".;")
+	if index_css_path ~= "" then
+		vim.cmd("edit " .. index_css_path)
+	else
+		print("No src/index.css file found in the current project.")
+	end
+end, { noremap = true, silent = true, desc = "Open src/index.css" })

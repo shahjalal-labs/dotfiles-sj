@@ -686,3 +686,17 @@ alias rr=rr
 
 # alias rr=fzf-history-widget
 
+
+fzf_history_search() {
+  # Save command list without line numbers
+  local selected_cmd
+  selected_cmd=$(builtin history -n 1 | sed 's/^[ ]*[0-9]*[ ]*//' | fzf-tmux --height 40% --reverse --ansi --prompt='History> ')
+  if [[ -n $selected_cmd ]]; then
+    LBUFFER="$selected_cmd"
+    zle reset-prompt
+  fi
+}
+
+zle -N fzf_history_search
+bindkey '^R' fzf_history_search
+

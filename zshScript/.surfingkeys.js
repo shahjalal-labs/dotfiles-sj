@@ -46,6 +46,16 @@ settings.startToShowEmoji = 1;
 //
 //
 //
+//w: opening perplexity ai ai
+
+api.mapkey("cd", "daisy ui", function () {
+  if (window.location.hostname.includes("daisy")) {
+    window.location.href = "https://daisyui.com/docs/install/vite/";
+  } else {
+    window.open("https://daisyui.com/docs/install/vite/", "_blank");
+  }
+});
+
 //t:  opening function
 //
 //t: facebook
