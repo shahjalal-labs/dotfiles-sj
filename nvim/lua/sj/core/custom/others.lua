@@ -157,3 +157,7 @@ end
 -- Map `<leader>sg` to search Google with the current line or visual selection
 vim.api.nvim_set_keymap("n", "<leader>sg", ":lua search_google_selection()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<leader>sg", ":<C-u>lua search_google_selection()<CR>", { noremap = true, silent = true })
+
+-- ╭──────────── Block Start ────────────╮
+
+-- ╰───────────── Block End ─────────────╯

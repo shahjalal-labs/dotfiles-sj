@@ -218,13 +218,13 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true }
 )
 --w: 29/11/2024 06:43 PM Fri GMT+6 Sharifpur, Gazipur, Dhaka
-vim.keymap.set({ "n", "x", "t", "o" }, ",", "<Cmd>HopChar1<CR>", { noremap = true, silent = true })
+-- vim.keymap.set({ "n", "x", "t", "o" }, ",", "<Cmd>HopChar1<CR>", { noremap = true, silent = true })
 -- by go starting of the line and press a space
 vim.keymap.set("n", "I", "I <Left>", { noremap = true, silent = true })
 -- vim.keymap.set("n", "I", "I ", { noremap = true, silent = true })
 
-vim.keymap.set("i", "<S-f>", "f", { noremap = true, silent = true })
-vim.keymap.set("i", "<S-f><S-f>", "F", { noremap = true, silent = true })
+-- vim.keymap.set("i", "<C-,>", ",", { noremap = true, silent = true })
+-- vim.keymap.set("i", "<S-f><S-f>", "F", { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap("n", "sk", ":HopChar2<CR>", { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap("n", "sw", ":HopWord<CR>", { noremap = true, silent = true })
 -- vim.keymap.set({ "n", "i", "x", "t" }, "sj", "<Cmd>HopChar1<CR>", { noremap = true, silent = true })

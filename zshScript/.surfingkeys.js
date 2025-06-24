@@ -46,8 +46,7 @@ settings.startToShowEmoji = 1;
 //
 //
 //
-//w: opening perplexity ai ai
-
+//w: opening daisy ui
 api.mapkey("cd", "daisy ui", function () {
   if (window.location.hostname.includes("daisy")) {
     window.location.href = "https://daisyui.com/docs/install/vite/";
@@ -100,7 +99,7 @@ api.mapkey("so", "scribble l1b10", () => {
 //
 //
 //
-//t:  open leonardo ai
+//t:  open deep  ai
 api.mapkey("ah", "Deep ai", function () {
   window.open("https://deepai.org/dashboard/images", "_blank");
 });
@@ -356,6 +355,13 @@ api.mapkey("sj", "Open Wedding Nasheed", function () {
 api.mapkey("st", "Open 5 Nasheed", function () {
   window.open("https://www.youtube.com/watch?v=naWQJpsbPFM", "_blank");
 });
+
+mapkey("ci", "#7Copy image src URL", function () {
+  Hints.create("img[src]", function (element) {
+    Clipboard.write(element.src);
+  });
+});
+
 //
 //
 //

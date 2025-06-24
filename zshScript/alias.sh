@@ -57,6 +57,7 @@ alias ba="bun add"
 alias bi="bun install"
 alias i="paru -S"
 alias nvl="NVIM_APPNAME=nvim-learn nvim"
+alias cb="~/.local/bin/hypr_clipboard_manager.sh"
 
 
 

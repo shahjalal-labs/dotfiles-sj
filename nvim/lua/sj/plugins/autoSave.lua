@@ -7,7 +7,7 @@ return {
 	opts = {
 		-- your config goes here
 		-- or just leave it empty :)
-		debounce_delay = 195,
+		debounce_delay = 295,
 		-- trigger_events = { "TextChanged" },
 	},
 }
