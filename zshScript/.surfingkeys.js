@@ -384,12 +384,12 @@ api.mapkey(
     copyImageWithHints();
   },
 );
-
-api.mapkey("<Esc>", "❌ Stop image copy loop", function () {
-  copyLoopActive = false;
-  api.Front.showBanner("🛑 Copy loop stopped");
-});
-
+/* if (copyLoopActive) {
+  api.mapkey("<Esc>", "❌ Stop image copy loop", function () {
+    copyLoopActive = false;
+    api.Front.showBanner("🛑 Copy loop stopped");
+  });
+} */
 api.mapkey("cj", "📷 Copy image URL using hints", function () {
   api.Hints.create("img[src]", function (el) {
     api.Clipboard.write(el.src);
