@@ -297,7 +297,7 @@ api.mapkey("am", "Chk claude", function () {
 
 //t: github repository page opening
 api.mapkey("gr", "Repository Github", function () {
-  window.open("https://github.com/mdshahjalal5?tab=repositories", "_blank");
+  window.open("https://github.com/mdshahjalal-labs?tab=repositories", "_blank");
 });
 
 //t:  new repo for github
@@ -352,14 +352,136 @@ api.mapkey("sj", "Open Wedding Nasheed", function () {
   );
 }); */
 //t: Open 5 Nasheed
-api.mapkey("st", "Open 5 Nasheed", function () {
-  window.open("https://www.youtube.com/watch?v=naWQJpsbPFM", "_blank");
+api.mapkey("ci", "🖼️ Copy image URL under cursor or focused image", () => {
+  const img = document.querySelector("img:hover") || document.activeElement;
+  if (img && img.tagName === "IMG") {
+    const url = img.src;
+    if (url) {
+      api.Clipboard.write(url);
+    }
+  }
 });
 
-mapkey("ci", "#7Copy image src URL", function () {
-  Hints.create("img[src]", function (element) {
-    Clipboard.write(element.src);
+let copyLoopActive = false;
+
+api.mapkey(
+  "cl",
+  "🔁 Copy multiple image URLs with hints loop",
+  function startCopyLoop() {
+    copyLoopActive = true;
+
+    const copyImageWithHints = () => {
+      if (!copyLoopActive) return;
+
+      api.Hints.create("img[src]", function (el) {
+        api.Clipboard.write(el.src);
+
+        // Delay a bit and show hints again
+        setTimeout(copyImageWithHints, 300);
+      });
+    };
+
+    copyImageWithHints();
+  },
+);
+
+api.mapkey("<Esc>", "❌ Stop image copy loop", function () {
+  copyLoopActive = false;
+  api.Front.showBanner("🛑 Copy loop stopped");
+});
+
+api.mapkey("cj", "📷 Copy image URL using hints", function () {
+  api.Hints.create("img[src]", function (el) {
+    api.Clipboard.write(el.src);
   });
+});
+
+//
+//
+// 🔁 Persistent smart click loop that detects and clicks both semantic and styled custom clickable elements across page navigations.
+
+api.mapkey("cb", "🔁 Persistent click hints", function repeatClickHints() {
+  api.Hints.create("*[onclick], button, a, input[type=submit]", function (el) {
+    el.click();
+
+    // Wait a short moment, then re-show hints
+    setTimeout(() => {
+      repeatClickHints(); // Call itself again
+    }, 200); // Delay to allow DOM to update
+  });
+});
+
+api.mapkey("cm", "📄 Copy image as Markdown", function () {
+  api.Hints.create("img[src]", function (el) {
+    const alt = el.alt || "image";
+    const markdown = `![${alt}](${el.src})`;
+    api.Clipboard.write(markdown);
+    api.Front.showPopup("✅ Copied as Markdown!");
+  });
+});
+
+api.mapkey("ch", "🖱️ Smart hover using hints", function () {
+  api.Hints.create("*", function (el) {
+    ["mouseover", "mouseenter", "focus"].forEach((type) => {
+      el.dispatchEvent(
+        new MouseEvent(type, { bubbles: true, cancelable: true, view: window }),
+      );
+    });
+
+    // api.Front.showPopup("🟡 Hovered or focused: " + (el.alt || el.innerText || el.tagName));
+  });
+});
+
+api.mapkey("cu", "🖱️ Move mouse cursor to element using hints", function () {
+  api.Hints.create("*", function (el) {
+    const rect = el.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+
+    // Move actual mouse pointer using RUNTIME
+    api.RUNTIME("moveTabSelection", {
+      x: Math.round(x),
+      y: Math.round(y),
+    });
+
+    // api.Front.showPopup("🎯 Moved to: " + (el.alt || el.innerText || el.tagName));
+  });
+});
+
+api.mapkey("ck", "🌒 Toggle dark mode (CSS inversion)", function () {
+  if (!document.getElementById("__sk_darkmode")) {
+    const style = document.createElement("style");
+    style.id = "__sk_darkmode";
+    style.innerHTML = `html { filter: invert(0.92) hue-rotate(180deg); background: #111 !important; } img, video { filter: invert(1) hue-rotate(180deg) !important; }`;
+    document.head.appendChild(style);
+    api.Front.showBanner("🌚 Dark mode ON");
+  } else {
+    document.getElementById("__sk_darkmode").remove();
+    api.Front.showBanner("🌞 Dark mode OFF");
+  }
+});
+
+api.mapkey("ca", "🔍 Reveal hidden elements using hints", function () {
+  api.Hints.create("*", function (el) {
+    el.style.display = "block";
+    el.style.visibility = "visible";
+    el.style.opacity = "1";
+    el.hidden = false;
+    api.Front.showPopup("✅ Revealed element: " + el.tagName);
+  });
+});
+
+api.vmapkey("ck", "🧠 Summarize selected text using ChatGPT", function () {
+  window.getSelection().toString().length > 0
+    ? api.Clipboard.write(window.getSelection().toString())
+    : api.Front.showPopup("❗ Select some text first");
+
+  setTimeout(() => {
+    const query = encodeURIComponent(
+      "summarize: " + window.getSelection().toString(),
+    );
+    window.open("https://chat.openai.com/chat?q=" + query, "_blank");
+  }, 300);
 });
 
 //
