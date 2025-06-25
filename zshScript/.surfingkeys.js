@@ -58,16 +58,17 @@ api.mapkey("cd", "daisy ui", function () {
 //t:  opening function
 //
 //t: facebook
-api.mapkey(
-  "sf",
-  "Open Facebook",
-  function () {
-    window.open("https://www.facebook.com", "_blank");
-  },
-  {
-    domain: /./, // Apply this mapping to all domains
-  },
-);
+api.mapkey("sf", "Open Facebook", function () {
+  window.open("https://www.facebook.com", "_blank");
+});
+
+api.mapkey("se", "Open webTextExpand", function () {
+  window.open(
+    "moz-extension://56bb38c0-edee-4773-9bad-2c7eb756a0a6/options.html",
+    "_blank",
+  );
+});
+
 //w: opening perplexity ai ai
 
 api.mapkey("ax", "perplexity ai", function () {
