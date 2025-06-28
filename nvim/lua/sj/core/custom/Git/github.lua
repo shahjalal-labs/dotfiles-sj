@@ -167,3 +167,130 @@ end
 vim.api.nvim_set_keymap("n", "<space>aj", ":lua GitPushFromNvim()<CR>", { noremap = true, silent = true })
 
 -- ╰───────────── Block End ───────────────╯
+
+-- ╭──────────── Block Start ────────────╮
+-- STEP 1: Generate smart commit message with file filtering
+-- local function generate_git_summary()
+-- 	local ignored_patterns = {
+-- 		"%.env$",
+-- 		"%.lock$",
+-- 		"node_modules/",
+-- 		"%.DS_Store$",
+-- 	}
+--
+-- 	local function should_ignore(file)
+-- 		for _, pattern in ipairs(ignored_patterns) do
+-- 			if file:match(pattern) then
+-- 				return true
+-- 			end
+-- 		end
+-- 		return false
+-- 	end
+--
+-- 	local git_diff = vim.fn.systemlist("git diff --cached --name-status")
+-- 	if not git_diff or #git_diff == 0 then
+-- 		return nil
+-- 	end
+--
+-- 	local summary = {}
+--
+-- 	for _, line in ipairs(git_diff) do
+-- 		local status, file = line:match("^(%a)%s+(.+)$")
+-- 		if file and not should_ignore(file) then
+-- 			if status == "A" then
+-- 				table.insert(summary, "🆕 Added: " .. file)
+-- 			elseif status == "M" then
+-- 				table.insert(summary, "✏️ Updated: " .. file)
+-- 			elseif status == "D" then
+-- 				table.insert(summary, "🗑️ Removed: " .. file)
+-- 			end
+-- 		end
+-- 	end
+--
+-- 	if #summary == 0 then
+-- 		return nil
+-- 	end
+--
+-- 	return table.concat(summary, " | ")
+-- end
+--
+-- -- STEP 2: Git add + commit + push
+-- local function intelligent_git_push()
+-- 	local cwd = vim.fn.getcwd()
+--
+-- 	-- git add .
+-- 	vim.fn.jobstart({ "bash", "-c", "cd " .. cwd .. " && git add ." }, {
+-- 		on_exit = function()
+-- 			local msg = generate_git_summary()
+-- 			if not msg then
+-- 				vim.notify("⚠️ Nothing to commit", vim.log.levels.INFO)
+-- 				return
+-- 			end
+--
+-- 			local cmd = string.format([[cd "%s" && git commit -m "%s" && git push]], cwd, msg)
+--
+-- 			vim.fn.jobstart({ "bash", "-c", cmd }, {
+-- 				detach = true,
+-- 				on_exit = function(_, code)
+-- 					if code == 0 then
+-- 						vim.notify("✅ Git pushed: " .. msg, vim.log.levels.INFO)
+-- 					else
+-- 						vim.notify("❌ Git push failed", vim.log.levels.ERROR)
+-- 					end
+-- 				end,
+-- 			})
+-- 		end,
+-- 	})
+-- end
+--
+-- -- STEP 3: Command
+-- vim.api.nvim_create_user_command("GitSmartPush", function()
+-- 	intelligent_git_push()
+-- end, {})
+--
+-- -- STEP 4: Keybind <leader>gp
+-- vim.keymap.set("n", "<leader>gb", intelligent_git_push, { desc = "💡 Git Smart Push" })
+--
+-- -- STEP 5: Auto push every 30 seconds (testing)
+-- local timer = vim.loop.new_timer()
+-- timer:start(0, 30000, vim.schedule_wrap(intelligent_git_push))
+--
+-- -- ╰───────────── Block End ─────────────╯
+
+-- ╭──────────── Block Start ────────────╮
+--w: 29/11/2024 06:50 PM Fri GMT+6 Sharifpur, Gazipur, Dhaka
+--p: run git remote -v from neovim , dynamically selec the tmux pane number
+function RunGitRemoteInTmuxPane()
+	-- Prompt the user for the tmux pane number
+	local pane_number = vim.fn.input("Enter the tmux pane number: "):gsub("%s+", "")
+
+	if pane_number == "" then
+		vim.notify("No pane number provided. Operation canceled.", vim.log.levels.ERROR)
+		return
+	end
+
+	-- Stop any running process in the specified tmux pane
+	local stop_command = "tmux send-keys -t " .. pane_number .. " C-c"
+	vim.fn.system(stop_command)
+
+	-- Wait briefly to ensure the process is stopped
+	vim.wait(200)
+
+	-- Clear the tmux pane before running the new command
+	local clear_command = "tmux send-keys -t " .. pane_number .. " C-l"
+	vim.fn.system(clear_command)
+
+	-- Wait briefly before sending the git remote command
+	vim.wait(100)
+
+	-- Send the git remote -v command
+	local git_command = "tmux send-keys -t " .. pane_number .. ' "git remote -v" C-m'
+	vim.fn.system(git_command)
+
+	-- Notify the user
+	vim.notify("Ran `git remote -v` in tmux pane " .. pane_number, vim.log.levels.INFO)
+end
+
+-- Bind the function to a key combination
+vim.keymap.set("n", "<leader>ar", RunGitRemoteInTmuxPane, { desc = "Run `git remote -v` in specified tmux pane" })
+-- ╰───────────── Block End ─────────────╯

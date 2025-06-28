@@ -110,7 +110,7 @@ api.mapkey("ah", "Deep ai", function () {
 //t: opening dotfiles
 api.mapkey("ad", "Dotfiles", function () {
   window.open(
-    "https://github.com/mdshahjalal5/allDotfilesBackupEndeavourOs",
+    "https://github.com/shahjalal-labs/allDotfilesBackupEndeavourOs",
     "_blank",
   );
 });
@@ -298,7 +298,7 @@ api.mapkey("am", "Chk claude", function () {
 
 //t: github repository page opening
 api.mapkey("gr", "Repository Github", function () {
-  window.open("https://github.com/mdshahjalal-labs?tab=repositories", "_blank");
+  window.open("https://github.com/shahjalal-labs?tab=repositories", "_blank");
 });
 
 //t:  new repo for github

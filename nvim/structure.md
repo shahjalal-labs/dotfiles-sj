@@ -6,25 +6,7 @@
 ├── lazy-lock.json
 ├── lua
 │   └── sj
-│       ├── core
-│       │   ├── custom
-│       │   │   ├── checking2.lua
-│       │   │   ├── checking-feature.lua
-│       │   │   ├── Git
-│       │   │   │   ├── github.lua
-│       │   │   │   └── init.lua
-│       │   │   ├── html.lua
-│       │   │   ├── init.lua
-│       │   │   ├── insertMode.lua
-│       │   │   ├── JsTsPro
-│       │   │   │   ├── init.lua
-│       │   │   │   ├── jsTs.lua
-│       │   │   │   └── jsxPro.lua
-│       │   │   ├── normalModeInInrsert.lua
-│       │   │   ├── others.lua
-│       │   │   ├── tmuxZsh2.lua
-│       │   │   └── tmuxZsh.lua
-│       │   ├── init.lua
+       │   ├── init.lua
 │       │   ├── keymaps.lua
 │       │   ├── options.lua
 │       │   └── utils.lua
@@ -48,6 +30,7 @@
 │           ├── fzf-lua.lua
 │           ├── gh.lua
 │           ├── gitsigns.lua
+│           ├── git-smart-push.lua
 │           ├── hop.lua
 │           ├── hurl.lua
 │           ├── indent-blankline.lua
@@ -60,6 +43,7 @@
 │           ├── lualine.lua
 │           ├── lua-snip.lua
 │           ├── mason-workaround.lua
+│           ├── md-pdf.lua
 │           ├── multi-cursor.lua
 │           ├── neotree.lua
 │           ├── noice.lua
@@ -85,6 +69,6 @@
 │           └── yazi.lua
 └── structure.md
 
-9 directories, 74 files
+9 directories, 77 files
 
 ```
