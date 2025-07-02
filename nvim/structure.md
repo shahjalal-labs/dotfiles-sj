@@ -6,7 +6,31 @@
 ├── lazy-lock.json
 ├── lua
 │   └── sj
-       │   ├── init.lua
+│       ├── core
+│       │   ├── custom
+│       │   │   ├── checking2.lua
+│       │   │   ├── checking-feature.lua
+│       │   │   ├── Git
+│       │   │   │   ├── autoPush.lua
+│       │   │   │   ├── github.lua
+│       │   │   │   ├── init.lua
+│       │   │   │   └── smartCopyPaste.lua
+│       │   │   ├── html.lua
+│       │   │   ├── init.lua
+│       │   │   ├── insertMode.lua
+│       │   │   ├── JsTsPro
+│       │   │   │   ├── init.lua
+│       │   │   │   ├── jsTs.lua
+│       │   │   │   └── jsxPro.lua
+│       │   │   ├── normalModeInInrsert.lua
+│       │   │   ├── others.lua
+│       │   │   ├── tmuxZsh2.lua
+│       │   │   ├── TmuxZshCli
+│       │   │   │   ├── init.lua
+│       │   │   │   ├── nvimTerminal.lua
+│       │   │   │   └── tmuxCommandSender.lua
+│       │   │   └── tmuxZsh.lua
+│       │   ├── init.lua
 │       │   ├── keymaps.lua
 │       │   ├── options.lua
 │       │   └── utils.lua
@@ -18,6 +42,7 @@
 │           ├── auto-session.lua
 │           ├── blammer.lua
 │           ├── bufferline.lua
+│           ├── chatgpt.lua
 │           ├── colorscheme.lua
 │           ├── comment.lua
 │           ├── cursor-line.lua
@@ -30,7 +55,6 @@
 │           ├── fzf-lua.lua
 │           ├── gh.lua
 │           ├── gitsigns.lua
-│           ├── git-smart-push.lua
 │           ├── hop.lua
 │           ├── hurl.lua
 │           ├── indent-blankline.lua
@@ -67,8 +91,9 @@
 │           ├── which-key.lua
 │           ├── yanky.lua
 │           └── yazi.lua
+├── README.md
 └── structure.md
 
-9 directories, 77 files
+10 directories, 82 files
 
 ```

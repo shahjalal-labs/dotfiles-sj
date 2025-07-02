@@ -1,10 +1,3 @@
-vim.api.nvim_set_keymap("t", "<Esc>", [[<C-\><C-n>]], { noremap = true }) -- Escape terminal mode
-vim.api.nvim_set_keymap("t", "<C-h>", [[<C-\><C-n><C-w>h]], { noremap = true }) -- Navigate left
-vim.api.nvim_set_keymap("t", "<C-l>", [[<C-\><C-n><C-w>l]], { noremap = true }) -- Navigate right
-vim.api.nvim_set_keymap("t", "<C-j>", [[<C-\><C-n><C-w>j]], { noremap = true }) -- Navigate down
-vim.api.nvim_set_keymap("t", "<C-k>", [[<C-\><C-n><C-w>k]], { noremap = true }) -- Navigate up
-vim.api.nvim_set_keymap("n", "<leader>tz", ":split | terminal<CR>", { noremap = true, silent = true })
-
 if vim.g.started_by_firenvim then
 	-- General configuration for Firenvim
 	vim.g.firenvim_config = {
@@ -39,19 +32,9 @@ if vim.g.started_by_firenvim then
 	})
 end
 
---w: Map space ak to set lines to 100 for firenvim
+--w: Map space bk to set lines to 100 for firenvim
 vim.api.nvim_set_keymap("n", "<Space>bk", ":set lines=80<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<Space>bk", ":set lines=100<CR>", { noremap = true, silent = true })
-
---w: open the current file in browser
-vim.keymap.set({ "n", "i" }, "<space>sa", function()
-	local file = vim.fn.expand("%:p")
-	if file == "" then
-		vim.notify("No file to open (maybe it's unsaved?)", vim.log.levels.ERROR)
-		return
-	end
-	vim.fn.jobstart({ "xdg-open", file }, { detach = true })
-end, { noremap = true, silent = true })
 
 --
 --

@@ -294,3 +294,118 @@ end
 -- Bind the function to a key combination
 vim.keymap.set("n", "<leader>ar", RunGitRemoteInTmuxPane, { desc = "Run `git remote -v` in specified tmux pane" })
 -- ╰───────────── Block End ─────────────╯
+--
+--
+-- ╭──────────── Block Start ────────────╮
+vim.api.nvim_create_user_command("GhCloneView", function()
+	local repo = vim.fn.system("wl-paste"):gsub("%s+", "")
+	if repo == "" or not repo:match(".+/.+") then
+		vim.notify("Invalid clipboard content: Expected 'username/repo'", vim.log.levels.ERROR)
+		return
+	end
+
+	local name = repo:gsub("/", "-")
+	local dir = "/tmp/ghrepo/" .. name
+
+	if vim.fn.isdirectory(dir) == 1 then
+		vim.notify("Repo already cloned: " .. dir, vim.log.levels.INFO)
+	else
+		vim.notify("Cloning: " .. repo, vim.log.levels.INFO)
+
+		-- Clone using depth=1
+		local cmd = string.format("git clone --depth=1 https://github.com/%s %s", repo, dir)
+		local result = vim.fn.system(cmd)
+
+		if vim.v.shell_error ~= 0 then
+			vim.notify("Clone failed:\n" .. result, vim.log.levels.ERROR)
+			return
+		end
+	end
+
+	-- Create new tmux window and 3 panes
+	local tmux = string.format(
+		[[
+    tmux new-window -n ghrepo -c %s \
+      'nvim .' \; split-window -v -c %s \; split-window -h -c %s
+  ]],
+		dir,
+		dir,
+		dir
+	)
+
+	vim.fn.system(tmux)
+	vim.notify("✅ Repo opened in tmux window!", vim.log.levels.INFO)
+end, {})
+
+vim.keymap.set("n", "<leader>gc", ":GhCloneView<CR>", { desc = "Clone GitHub repo from clipboard" })
+-- ╰───────────── Block End ─────────────╯
+--
+--
+vim.api.nvim_create_user_command("GhCloneTmuxView", function()
+	local repo = vim.fn.system("wl-paste"):gsub("%s+", "")
+	if repo == "" or not repo:match(".+/.+") then
+		vim.schedule(function()
+			vim.notify("Invalid clipboard content: Expected 'username/repo'", vim.log.levels.ERROR)
+		end)
+		return
+	end
+
+	local name = repo:gsub("/", "-")
+	local dir = "/tmp/ghrepo/" .. name
+
+	local function run_tmux()
+		local tmux_script = string.format(
+			[[
+      tmux new-window -d -n ghrepo -c %s 'nvim .' ; \
+      tmux split-window -v -t ghrepo -c %s ; \
+      tmux split-window -h -t ghrepo -c %s ; \
+      sleep 0.1 ; \
+      tmux select-layout -t ghrepo '%s' ; \
+      tmux select-pane -t ghrepo.1 ; \
+      tmux select-window -t ghrepo
+    ]],
+			dir,
+			dir,
+			dir,
+			"8d8d,210x44,0,0[210x27,0,0,1,210x16,0,28{104x16,0,28,2,105x16,105,28,3}]"
+		)
+
+		vim.fn.jobstart(tmux_script, {
+			on_exit = function(_, code)
+				vim.schedule(function()
+					if code == 0 then
+						vim.notify("Tmux window opened and focused on pane 1", vim.log.levels.INFO)
+					else
+						vim.notify("Tmux command failed with exit code " .. code, vim.log.levels.ERROR)
+					end
+				end)
+			end,
+		})
+	end
+
+	if vim.fn.isdirectory(dir) == 1 then
+		vim.schedule(function()
+			vim.notify("Repo already cloned: " .. dir, vim.log.levels.INFO)
+		end)
+		run_tmux()
+	else
+		vim.schedule(function()
+			vim.notify("Cloning: " .. repo, vim.log.levels.INFO)
+		end)
+		local clone_cmd = string.format("git clone --depth=1 https://github.com/%s %s", repo, dir)
+		vim.fn.jobstart(clone_cmd, {
+			on_exit = function(_, code)
+				vim.schedule(function()
+					if code == 0 then
+						vim.notify("Clone successful!", vim.log.levels.INFO)
+						run_tmux()
+					else
+						vim.notify("Clone failed with exit code: " .. code, vim.log.levels.ERROR)
+					end
+				end)
+			end,
+		})
+	end
+end, {})
+
+vim.keymap.set("n", "<leader>ga", ":GhCloneTmuxView<CR>", { desc = "Clone GitHub repo and open in tmux async" })

@@ -1,5 +1,7 @@
+vim.keymap.set({ "i", "n" }, "<A-c>", "< /> <LEFT><LEFT><LEFT><LEFT>", { noremap = true })
+
+--w:╭──────────── Block Start ────────────╮
 --p: wrap current line  with div
---
 function WrapJsxWithDiv()
 	local mode = vim.fn.mode()
 	local start_line, end_line
@@ -47,6 +49,8 @@ function WrapJsxWithDiv()
 end
 
 vim.keymap.set({ "n", "v" }, "<leader>ja", WrapJsxWithDiv, { desc = "Wrap JSX tag in <div>" })
+--
+--t: ╰───────────── Block End ─────────────╯
 --
 --
 --

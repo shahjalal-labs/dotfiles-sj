@@ -137,6 +137,7 @@ local function start_git_timer(git_root)
 	timer:start(
 		0,
 		900000,
+
 		-- 3000,
 		vim.schedule_wrap(function()
 			intelligent_git_push(git_root)
@@ -230,7 +231,7 @@ local function generate_git_summary(git_root)
 		table.insert(parts, "feat: Added " .. table.concat(added, ", "))
 	end
 	if #modified > 0 then
-		table.insert(parts, "style: Updated " .. table.concat(modified, ", "))
+		table.insert(parts, "improve: Updated " .. table.concat(modified, ", "))
 	end
 	if #deleted > 0 then
 		table.insert(parts, "chore: Removed " .. table.concat(deleted, ", "))
@@ -336,7 +337,7 @@ local function start_git_timer(git_root)
 	local timer = uv.new_timer()
 	timer:start(
 		5000,
-		900000, -- 15 mins in ms
+		600000, -- 15 mins in ms
 		-- 3000,
 		vim.schedule_wrap(function()
 			intelligent_git_push(git_root)

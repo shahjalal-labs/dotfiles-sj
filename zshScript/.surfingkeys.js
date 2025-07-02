@@ -1,8 +1,4 @@
-api.mapkey("<ctrl-y>", "Show me the money", function () {
-  Front.showPopup(
-    "a well-known phrase uttered by characters in the 1996 film Jerry Maguire (Escape to close).",
-  );
-});
+//
 
 //t: an example to replace `T` with `gt`, click `Default mappings` to see how `T` works.
 api.map("gt", "t");
@@ -352,7 +348,7 @@ api.mapkey("sj", "Open Wedding Nasheed", function () {
     "_blank",
   );
 }); */
-//t: Open 5 Nasheed
+//t: 🖼️ Copy image URL under cursor or focused image
 api.mapkey("ci", "🖼️ Copy image URL under cursor or focused image", () => {
   const img = document.querySelector("img:hover") || document.activeElement;
   if (img && img.tagName === "IMG") {
@@ -363,6 +359,7 @@ api.mapkey("ci", "🖼️ Copy image URL under cursor or focused image", () => {
   }
 });
 
+//t: Copy multiple image URLs with hints loop
 let copyLoopActive = false;
 
 api.mapkey(
@@ -385,12 +382,9 @@ api.mapkey(
     copyImageWithHints();
   },
 );
-/* if (copyLoopActive) {
-  api.mapkey("<Esc>", "❌ Stop image copy loop", function () {
-    copyLoopActive = false;
-    api.Front.showBanner("🛑 Copy loop stopped");
-  });
-} */
+//t: ended Copy multiple image URLs with hints loop
+
+// t: 📷 Copy image URL using hints
 api.mapkey("cj", "📷 Copy image URL using hints", function () {
   api.Hints.create("img[src]", function (el) {
     api.Clipboard.write(el.src);
@@ -399,8 +393,7 @@ api.mapkey("cj", "📷 Copy image URL using hints", function () {
 
 //
 //
-// 🔁 Persistent smart click loop that detects and clicks both semantic and styled custom clickable elements across page navigations.
-
+//t: 🔁 Persistent smart click loop that detects and clicks both semantic and styled custom clickable elements across page navigations.
 api.mapkey("cb", "🔁 Persistent click hints", function repeatClickHints() {
   api.Hints.create("*[onclick], button, a, input[type=submit]", function (el) {
     el.click();
@@ -412,6 +405,7 @@ api.mapkey("cb", "🔁 Persistent click hints", function repeatClickHints() {
   });
 });
 
+//t: 📄 Copy image as Markdown
 api.mapkey("cm", "📄 Copy image as Markdown", function () {
   api.Hints.create("img[src]", function (el) {
     const alt = el.alt || "image";
@@ -421,6 +415,7 @@ api.mapkey("cm", "📄 Copy image as Markdown", function () {
   });
 });
 
+//t: 🖱️ Smart hover using hints
 api.mapkey("ch", "🖱️ Smart hover using hints", function () {
   api.Hints.create("*", function (el) {
     ["mouseover", "mouseenter", "focus"].forEach((type) => {
@@ -433,22 +428,7 @@ api.mapkey("ch", "🖱️ Smart hover using hints", function () {
   });
 });
 
-api.mapkey("cu", "🖱️ Move mouse cursor to element using hints", function () {
-  api.Hints.create("*", function (el) {
-    const rect = el.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-
-    // Move actual mouse pointer using RUNTIME
-    api.RUNTIME("moveTabSelection", {
-      x: Math.round(x),
-      y: Math.round(y),
-    });
-
-    // api.Front.showPopup("🎯 Moved to: " + (el.alt || el.innerText || el.tagName));
-  });
-});
-
+// t: toggle dark mode (CSS inversion)
 api.mapkey("ck", "🌒 Toggle dark mode (CSS inversion)", function () {
   if (!document.getElementById("__sk_darkmode")) {
     const style = document.createElement("style");
@@ -462,6 +442,7 @@ api.mapkey("ck", "🌒 Toggle dark mode (CSS inversion)", function () {
   }
 });
 
+// t: 🔍 Reveal hidden elements using hints
 api.mapkey("ca", "🔍 Reveal hidden elements using hints", function () {
   api.Hints.create("*", function (el) {
     el.style.display = "block";
@@ -472,67 +453,88 @@ api.mapkey("ca", "🔍 Reveal hidden elements using hints", function () {
   });
 });
 
-api.vmapkey("ck", "🧠 Summarize selected text using ChatGPT", function () {
-  window.getSelection().toString().length > 0
-    ? api.Clipboard.write(window.getSelection().toString())
-    : api.Front.showPopup("❗ Select some text first");
+//t: copy github username/repo like shahjalal-labs/nvim
+api.mapkey(
+  "gl",
+  "Copy GitHub username/repo",
+  function () {
+    const url = window.location.href;
+    if (!url.includes("github.com")) {
+      api.Front.showBanner("Not a GitHub page");
+      return;
+    }
+    const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)(\/|$)/);
+    if (match) {
+      const user = match[1];
+      const repo = match[2];
+      const textToCopy = `${user}/${repo}`;
+      api.Clipboard.write(textToCopy);
+      api.Front.showBanner(`Copied: ${textToCopy}`);
+    } else {
+      api.Front.showBanner("Not a repo URL");
+    }
+  },
+  { domain: /./, prefix: " " },
+);
 
-  setTimeout(() => {
-    const query = encodeURIComponent(
-      "summarize: " + window.getSelection().toString(),
-    );
-    window.open("https://chat.openai.com/chat?q=" + query, "_blank");
-  }, 300);
+// t: 📋 Smart GitHub Repo Copier
+api.mapkey("ga", "📋 Smart GitHub Repo Copier", async function () {
+  const url = window.location.href;
+
+  // Helper to extract user/repo from href
+  const extractUserRepo = (href) => {
+    const match = href.match(/^\/([^/]+)\/([^/]+)/);
+    return match ? `${match[1]}/${match[2]}` : null;
+  };
+
+  // If on repositories list page
+  if (url.includes("?tab=repositories")) {
+    let clickLoopActive = true;
+
+    const runHintLoop = () => {
+      if (!clickLoopActive) return;
+      api.Hints.create('a[href*="/"][itemprop="name codeRepository"]', (el) => {
+        const user = location.pathname.split("/")[1];
+        const repo = el.innerText.trim();
+        if (user && repo) {
+          api.Clipboard.write(`${user}/${repo}`);
+          api.Front.showBanner(`✅ Copied: ${user}/${repo}`);
+        }
+        setTimeout(runHintLoop, 200);
+      });
+    };
+
+    runHintLoop();
+
+    // Stop loop on Esc
+    api.mapkey("<Esc>", "❌ Stop GitHub Repo Copier loop", () => {
+      clickLoopActive = false;
+    });
+  }
+
+  // If on a single repository page
+  else if (/^https:\/\/github\.com\/[^/]+\/[^/]+/.test(url)) {
+    const match = url.match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)/);
+    if (match) {
+      const userRepo = `${match[1]}/${match[2]}`;
+      api.Clipboard.write(userRepo);
+      api.Front.showBanner(`✅ Copied: ${userRepo}`);
+    }
+
+    // Show hint for SSH copy buttons
+    api.Hints.create("clipboard-copy[data-copy-feedback]", (el) => {
+      const ssh = el.getAttribute("value") || el.innerText;
+      api.Clipboard.write(ssh);
+      api.Front.showBanner(`🔑 Copied SSH: ${ssh}`);
+    });
+  }
+
+  // Else: Not on GitHub repo
+  else {
+    api.Front.showBanner("⚠️ Not on a GitHub repo or repositories page");
+  }
 });
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//t:  set theme
-// settings.theme = `
-// .sk_theme {
-//     font-family: Input Sans Condensed, Charcoal, sans-serif;
-//     font-size: 10pt;
-//     background: #24272e;
-//     color: #abb2bf;
-// }
-// .sk_theme tbody {
-//     color: #fff;
-// }
-// .sk_theme input {
-//     color: #d0d0d0;
-// }
-// .sk_theme .url {
-//     color: #61afef;
-// }
-// .sk_theme .annotation {
-//     color: #56b6c2;
-// }
-// .sk_theme .omnibar_highlight {
-//     color: #528bff;
-// }
-// .sk_theme .omnibar_timestamp {
-//     color: #e5c07b;
-// }
-// .sk_theme .omnibar_visitcount {
-//     color: #98c379;
-// }
-// .sk_theme #sk_omnibarSearchResult ul li:nth-child(odd) {
-//     background: #303030;
-// }
-// .sk_theme #sk_omnibarSearchResult ul li.focused {
-//     background: #3e4452;
-// }
-// #sk_status, #sk_find {
-//     font-size: 20pt;
-// }`;
-//
 //
 //
 //

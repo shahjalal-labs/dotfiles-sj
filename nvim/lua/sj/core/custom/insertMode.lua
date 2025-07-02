@@ -91,14 +91,6 @@ end
 --
 --
 --
---t:copy the absolute path of the current file in Neovim using space sj
-vim.api.nvim_set_keymap("n", "<space>sj", ":lua CopyAbsolutePath()<CR>", { noremap = true, silent = true })
-
-function CopyAbsolutePath()
-	local file_path = vim.fn.expand("%:p") -- Get the absolute path of the current file
-	vim.fn.setreg("+", file_path) -- Copy the path to the system clipboard
-	print("Copied path: " .. file_path)
-end
 
 --
 --

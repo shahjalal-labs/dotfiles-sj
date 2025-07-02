@@ -1,4 +1,3 @@
-vim.keymap.set({ "i", "n" }, "<A-c>", "< /> <LEFT><LEFT><LEFT><LEFT>", { noremap = true })
 vim.keymap.set("n", "<leader>sw", function()
 	local cwd = vim.fn.getcwd()
 	local screenshots_dir = cwd .. "/src/assets/screenshots"
