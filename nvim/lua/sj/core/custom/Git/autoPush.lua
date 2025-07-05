@@ -286,9 +286,9 @@ local function intelligent_git_push(git_root)
 			local diff = vim.fn.system("git -C " .. git_root .. " diff --cached --shortstat")
 			local insertions = tonumber(diff:match("(%d+) insertion")) or 0
 			local deletions = tonumber(diff:match("(%d+) deletion")) or 0
-			if insertions + deletions < 10 then
+			if insertions + deletions < 17 then
 				vim.schedule(function()
-					vim.notify("⏸️ Skipped push — changes less than 10 LOC: " .. git_root, vim.log.levels.INFO)
+					vim.notify("⏸️ Skipped push — changes less than 17 LOC: " .. git_root, vim.log.levels.INFO)
 				end)
 				return
 			end
@@ -337,7 +337,7 @@ local function start_git_timer(git_root)
 	local timer = uv.new_timer()
 	timer:start(
 		5000,
-		600000, -- 15 mins in ms
+		420000, -- 7 mins in ms
 		-- 3000,
 		vim.schedule_wrap(function()
 			intelligent_git_push(git_root)

@@ -1,11 +1,11 @@
 -- set leader key to space
 -- vim.g.mapleader = ";"
+-- -- Unmap 'f' in normal mode to avoid conflict
 vim.g.mapleader = " "
 
 local keymap = vim.keymap -- for conciseness
 -- Set an extremely short timeoutlen (50 milliseconds)
 vim.o.timeoutlen = 50
----------------------
 -- General Keymaps -------------------
 
 -- clear search highlights

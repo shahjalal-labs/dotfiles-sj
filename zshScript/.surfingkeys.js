@@ -1,6 +1,11 @@
+import { initPerplexityKey } from "./surfingModule/perplexity.js";
+
 //
 
 //t: an example to replace `T` with `gt`, click `Default mappings` to see how `T` works.
+
+initPerplexityKey();
+
 api.map("gt", "t");
 api.map("w", "d");
 api.map("t", "T");
@@ -336,6 +341,29 @@ api.mapkey("sj", "Open Wedding Nasheed", function () {
     "_blank",
   );
 });
+
+// p: open discord session announcement
+api.mapkey("and", "open ejp discord sesssion announcement", function () {
+  if (window.location.hostname.includes("discord")) {
+    window.location.href =
+      "https://discord.com/channels/1386609361345843211/1386636865842708550";
+  } else {
+    window.open(
+      "https://discord.com/channels/1386609361345843211/1386636865842708550",
+      "_blank",
+    );
+  }
+});
+
+// p: open discord session announcement
+api.mapkey("anz", "open ejp discord sesssion announcement", function () {
+  if (window.location.hostname.includes("zoom")) {
+    window.location.href = "https://www.zoom.us/join";
+  } else {
+    window.open("https://www.zoom.us/profile", "_blank");
+  }
+});
+
 //
 //
 //t: isami music playlist
