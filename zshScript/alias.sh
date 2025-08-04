@@ -19,7 +19,7 @@ alias tk='tmux kill-session -t '
 
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 # alias ,='nvim .'
-alias c="/home/sj/.config/nvim"
+alias c="nvim /home/sj/.config/nvim"
 alias p='systemctl --user restart pipewire && systemctl --user restart pipewire-pulse && systemctl --user daemon-reload'
 alias gi="git_push"
 alias d='nmcli device disconnect enp1s0'
@@ -58,7 +58,9 @@ alias bi="bun install"
 alias i="paru -S"
 alias nvl="NVIM_APPNAME=nvim-learn nvim"
 alias cb="~/.local/bin/hypr_clipboard_manager.sh"
+# alias rn="ranger"
 
+alias f="n /run/media/sj/developer/zshScript/customFunction.sh"
 
 
 

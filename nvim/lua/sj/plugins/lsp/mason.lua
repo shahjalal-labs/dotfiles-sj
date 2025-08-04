@@ -88,6 +88,7 @@ return {
 					"emmet_ls",
 					-- "prismals",
 					-- "pyright",
+					-- "pylint", -- python linter
 				},
 			})
 		end,

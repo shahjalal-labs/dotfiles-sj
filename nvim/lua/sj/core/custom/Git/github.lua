@@ -8,9 +8,6 @@ local function createGitRepoAndPushToGithub()
 	-- Get the current working directory
 	local cwd = vim.fn.getcwd()
 
-	-- Get the system username
-	local username = vim.fn.system("whoami"):gsub("%s+", "")
-
 	-- Get the current date and time
 	local date_time = os.date("%d/%m/%Y %I:%M %p %a GMT+6")
 
@@ -21,10 +18,11 @@ local function createGitRepoAndPushToGithub()
 	local repo_name = vim.fn.fnamemodify(cwd, ":t")
 	local live_site = "http://shahjalal-mern.surge.sh"
 	local portfolio_github = "https://github.com/shahjalal-labs/shahjalal-portfolio-v2"
-	local portfolio_live = "http://shahjalal-mern.surge.sh"
-	local linkedin = "https://www.linkedin.com/in/shahjalal-mern/"
-	local facebook = "https://www.facebook.com/profile.php?id=61556383702555"
-	local youtube = "https://www.youtube.com/@muhommodshahjalal9811"
+	local portfolio_live = "http://shahjalal-labs.surge.sh"
+	local linkedin = "https://www.linkedin.com/in/shahjalal-labs/"
+
+	local facebook = "https://www.facebook.com/shahjalal.labs"
+	local twitter = "https://x.com/shahjalal_labs"
 
 	-- Prompt for repository name (non-blocking) with default
 	vim.ui.input({ prompt = "Enter the repository name: ", default = repo_name }, function(input)
@@ -49,12 +47,11 @@ local function createGitRepoAndPushToGithub()
 | 💻 **Portfolio GitHub** | [%s](%s)                                                                  |
 | 🌐 **Portfolio Live**   | [%s](%s)                                                                  |
 | 📁 **Directory**        | `%s`                                                                      |
-| 👤 **Username**         | `%s`                                                                      |
 | 📅 **Created On**       | `%s`                                                                      |
 | 📍 **Location**         | %s                                                                        |
 | 💼 **LinkedIn**         | [%s](%s)                                                                  |
 | 📘 **Facebook**         | [%s](%s)                                                                  |
-| ▶️ **YouTube**          | [%s](%s)                                                                  |
+| ▶️ **Twitter**          | [%s](%s)                                                                  |
 
 ---
 ### `Developer info:`
@@ -73,15 +70,14 @@ local function createGitRepoAndPushToGithub()
 			portfolio_live,
 			portfolio_live,
 			cwd,
-			username,
 			date_time,
 			location,
 			linkedin,
 			linkedin,
 			facebook,
 			facebook,
-			youtube,
-			youtube
+			twitter,
+			twitter
 		)
 		-- Check if README.md exists and append content at the top
 		local readme_file_path = "README.md"

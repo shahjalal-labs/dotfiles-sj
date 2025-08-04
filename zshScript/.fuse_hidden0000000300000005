@@ -700,20 +700,3 @@ fzf_history_search() {
 zle -N fzf_history_search
 bindkey '^R' fzf_history_search
 
-
-rn() {
-    local tempfile="$(mktemp -t tmp.XXXXXX)"
-    command ranger \
-        --cmd="map q chain shell echo %d > \"$tempfile\"; quitall" \
-        --cmd="map Q quitall" \
-        "$@"
-    
-    if [[ -f "$tempfile" ]] && [[ -s "$tempfile" ]]; then
-        local ranger_cwd="$(cat "$tempfile")"
-        if [[ -n "$ranger_cwd" ]] && [[ -d "$ranger_cwd" ]]; then
-            cd "$ranger_cwd"
-        fi
-    fi
-    
-    command rm -f "$tempfile" 2>/dev/null
-}

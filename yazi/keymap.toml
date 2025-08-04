@@ -127,7 +127,8 @@ keymap = [
 
 	# Goto
 	{ on = [ "g", "h" ],       run = "cd ~",             desc = "Go home" },
-	{ on = [ "g", "l" ],       run = "cd /run/media/sj/developer/web/L1B11",             desc = "Go L1B11" },
+ 	{ on = [ "g", "t" ],       run = "cd /run/media/sj/developer/web/L1B11/1-amr-day-record/sessions/July25",  desc = "Go sessions" },
+	{ on = [ "g", "l" ],       run = "cd /run/media/sj/developer/web/L1B11", desc = "Go L1B11" },
  	{ on = [ "g", "s" ],       run = "cd /run/media/sj/developer/web/L1B11/screenshots", desc = "Go to screenshots" },
  	{ on = [ "g", "i" ],       run = "cd /run/media/sj/developer/web/L1B11/4-mi-js/23-mo-javaScript-simple-coding-problems-part-2/js-problems-part2/pr/.s8cr8tN8w/ss/bestImage", desc = "Go .s8cr8t" },
 	{ on = [ "g", "k" ],       run = "cd /run/media/sj/developer/web/L1B6UpdatedTo9",             desc = "L1B6 Updated to Batch 10" },
@@ -162,6 +163,7 @@ keymap = [
 	# Help
 	{ on = "~",    run = "help", desc = "Open help" },
 	{ on = "<F1>", run = "help", desc = "Open help" },
+  { on = [ "g", "r" ], run = "shell '/run/media/sj/developer/zshScript/shellScript/switch-to-ranger.sh \"$PWD\"'", desc = "Switch to ranger" },
 ]
 
 [tasks]

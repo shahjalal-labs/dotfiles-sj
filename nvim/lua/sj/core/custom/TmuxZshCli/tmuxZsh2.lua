@@ -4,6 +4,7 @@
 
 local keymap = vim.keymap
 
+--p: ╭──────────── Block Start ────────────╮
 --t: Function to restore specific tmux layouts
 function restore_tmux_layouts()
 	vim.fn.system("tmux select-layout -t 0 '8d8d,210x44,0,0[210x27,0,0,4,210x16,0,28{104x16,0,28,5,105x16,105,28,6}]'")
@@ -14,14 +15,12 @@ function restore_tmux_layouts()
 end
 
 keymap.set("n", "<leader>aa", ":lua restore_tmux_layouts()<CR>", { noremap = true, silent = true })
+--p: ╰───────────── Block End ─────────────╯
 
 --
 --
---
---
---
---
---
+
+--p: ╭──────────── Block Start ────────────╮
 --t: clear tmux panes
 vim.api.nvim_set_keymap("n", "<space>al", ":lua ClearOtherTmuxPanes()<CR>", { noremap = true, silent = true })
 function ClearOtherTmuxPanes()
@@ -64,26 +63,56 @@ function ClearOtherTmuxPanes()
 		vim.notify("Cleared all tmux panes except the active Neovim pane")
 	end
 end
---
---
---
---
---
+--p: ╰───────────── Block End ─────────────╯
 --
 
 -- update another time
 
-vim.keymap.set("n", "<leader>gm", ":!gh repo view --web<CR>", { noremap = true, silent = true })
+--
+--
+--
+--
+--
+--
 
---
---
---
---
---
---
---
+--p: ╭──────────── Block Start ────────────╮
 --w: yank the current projects root path
 vim.keymap.set("n", "<leader>cr", function()
 	vim.fn.setreg("+", vim.fn.getcwd())
 	print("Copied root directory: " .. vim.fn.getcwd())
 end, { desc = "Copy root directory to clipboard" })
+--p: ╰───────────── Block End ─────────────╯
+
+--p: ╭──────────── Block Start ────────────╮
+local function run_clipboard_command()
+	-- Get clipboard content
+	local command = vim.fn.getreg("+"):gsub("\n", "") -- Remove newlines
+
+	if command == "" then
+		vim.notify("Clipboard is empty!", vim.log.levels.WARN)
+		return
+	end
+
+	-- Notify user that command is running
+	vim.notify("Running: " .. command, vim.log.levels.INFO)
+
+	-- Start job to run command and capture output
+	vim.fn.jobstart(command, {
+		stdout_buffered = true,
+		stderr_buffered = true,
+		on_stdout = function(_, data)
+			if data then
+				vim.notify(table.concat(data, "\n"), vim.log.levels.INFO)
+			end
+		end,
+		on_stderr = function(_, data)
+			if data then
+				vim.notify(table.concat(data, "\n"), vim.log.levels.ERROR)
+			end
+		end,
+	})
+end
+
+-- Use `vim.keymap.set` which works better with Lua functions
+vim.keymap.set("n", "<leader>rr", run_clipboard_command, { noremap = true, silent = true })
+--p: ╰───────────── Block End ─────────────╯

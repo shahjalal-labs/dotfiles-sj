@@ -218,3 +218,9 @@ sort_by      	 = "none"
 sort_sensitive = false
 sort_reverse 	 = false
 sort_translit  = false
+
+[keys.normal]
+# w = { exec = "/run/media/sj/developer/zshScript/shellScript/lf_fm_shell_script/dev-launch.sh '{{file}}'", desc = "Dev Launch in tmux panes" }
+
+w = { exec = "sh -c '/run/media/sj/developer/zshScript/shellScript/lf_fm_shell_script/dev-launch.sh \"$YAZI_FILE\"'", desc = "Dev Launch in tmux panes" }
+
