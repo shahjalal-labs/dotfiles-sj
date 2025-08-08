@@ -260,11 +260,86 @@ return {
 	},
   -- stylua: ignore
   keys = {
-    { "f", mode = {"n", "x", "t", "o"} , function() require("flash").jump() end, desc = "Flash" },
-    { "<M-f3>", mode = { "i"} , function() require("flash").jump() end, desc = "Flash" },
-    { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    { "f",      mode = { "n", "x", "t", "o" }, function() require("flash").jump() end,             desc = "Flash" },
+    { "<M-f3>", mode = { "i" },               function() require("flash").jump() end,              desc = "Flash" },
+    { "S",      mode = { "n", "x", "o" },     function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+    { "r",      mode = "o",                   function() require("flash").remote() end,            desc = "Remote Flash" },
+    { "R",      mode = { "o", "x" },          function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    { "<c-s>",  mode = { "c" },               function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+
+    --w:  jump url   with flash hints
+    {
+      "<leader>uh",
+      mode = { "n", "x", "o" },
+      function()
+        require("flash").jump({
+          pattern = [[https\?://\S\+]], -- direct pattern, not prompted
+          search = {
+            mode = "search",
+            multi_window = true, -- or true if you want all windows
+            incremental = false,
+          },
+          label = {
+            after = true,
+            before = false,
+            style = "inline",
+          },
+          highlight = {
+            matches = true,
+            backdrop = true,
+          },
+        })
+      end,
+      desc = "Flash Jump to URLs",
+    },
+    --w: jump url  and browser open without focus to the url
+    {
+      "<leader>ud",
+      mode = { "n", "x", "o" },
+      function()
+        require("flash").jump({
+          pattern = [[https\?://\S\+]],
+          search = { mode = "search", incremental = false },
+          action = function(match)
+            local line = vim.fn.getline(match.pos[1])
+            -- Extract URL and clean common trailing chars
+            local url = string.match(line, "https?://[%S]+", match.pos[2])
+            if url then
+              -- Remove trailing punctuation that's likely not part of URL
+              url = string.gsub(url, '[")};,]+$', '')
+              vim.notify("Opening: " .. url)
+              vim.fn.jobstart({ "xdg-open", url }, { detach = true })
+            end
+          end,
+        })
+      end,
+      desc = "Flash jump and open URL",
+    },
+    --w: jump url  and browser open and focus that url
+    {
+      "<leader>uo",
+      mode = { "n", "x", "o" },
+      function()
+        require("flash").jump({
+          pattern = [[https\?://\S\+]],
+          search = { mode = "search", incremental = false },
+          action = function(match)
+            -- Move cursor to the URL position
+            vim.api.nvim_win_set_cursor(0, { match.pos[1], match.pos[2] - 1 })
+
+            local line = vim.fn.getline(match.pos[1])
+            local url = string.match(line, "https?://[%S]+", match.pos[2])
+            if url then
+              url = string.gsub(url, '[")};,]+$', '')
+              vim.notify("Opening: " .. url)
+              vim.fn.jobstart({ "xdg-open", url }, { detach = true })
+            end
+          end,
+        })
+      end,
+      desc = "Flash jump to URL and open",
+    }
+
+
   },
 }

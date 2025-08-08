@@ -43,7 +43,7 @@ alias gn='gh gd'
 # alias ak='/mnt/fed/web/L2B1'
 # alias al='/mnt/fed/web/L2B4'
 #
-alias r='history | fzf | sed "s/^[ ]*[0-9]\+[ ]*//" | xargs -I {} bash -c "{}"'
+alias rr='history | fzf | sed "s/^[ ]*[0-9]\+[ ]*//" | xargs -I {} bash -c "{}"'
 
 # alias yay='paru'
 

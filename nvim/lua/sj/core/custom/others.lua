@@ -159,5 +159,160 @@ vim.api.nvim_set_keymap("n", "<leader>sg", ":lua search_google_selection()<CR>",
 vim.api.nvim_set_keymap("v", "<leader>sg", ":<C-u>lua search_google_selection()<CR>", { noremap = true, silent = true })
 
 -- ╭──────────── Block Start ────────────╮
-
+--
+-- vim.keymap.set("n", "<leader>pj", function()
+-- 	local jobdir = "/run/media/sj/developer/web/L1B11/career/JobDocuments/jobDescription/"
+-- 	local base = jobdir .. "jd"
+-- 	local ext = ".md"
+--
+-- 	-- Step 1: Read clipboard
+-- 	local clipboard = vim.fn.system("wl-paste")
+-- 	clipboard = clipboard:gsub("\r", "") -- clean carriage return
+--
+-- 	-- Step 2: Find next available filename
+-- 	local filename = base .. ext
+-- 	local i = 1
+-- 	while vim.fn.filereadable(filename) == 1 do
+-- 		filename = base .. i .. ext
+-- 		i = i + 1
+-- 	end
+--
+-- 	-- Step 3: Prompt template
+-- 	local prompt = [[
+-- ### 📋 INSTRUCTIONS:
+-- You are a job formatter. Convert the following **raw job description** into a structured and detailed markdown format like the sample below.
+--
+-- #### 🔧 Your Task:
+-- 1. Extract key information: company name, title, location, timezone, type, stack (required & optional), how to apply.
+-- 2. Convert currencies to BDT and show original.
+-- 3. Convert timezones to GMT+6 (Dhaka), retain original too.
+-- 4. Generate output using this exact markdown structure:
+--
+-- ```markdown
+-- ### 1. `🏢 Company Name — Job Title`
+--
+-- <pre><code>
+-- 📅 Applied On: (Not yet applied)
+-- 💰 Stipend/Salary : ORIGINAL ≈ BDT / Monthly
+-- ⏰ Hours: Dhaka Time (GMT+6) → Original Timezone
+-- 🧰 Stack: Required stacks
+-- 📆 Interview Date: (Not yet scheduled)
+-- 🌐 Location: Full Location + timezone
+-- 🧭 Platform: Application Source (e.g., Discord/Email)
+-- ⏳ Status: 🟡 Pending
+-- </code></pre>
+--
+-- 🔗 [Company Website]() `url` <br />
+-- 🔗 [Job Link]() `link`
+--
+-- <details>
+-- <summary>📓 Notes</summary>
+--
+-- - Mention any assumptions or missing info.
+-- - Application method (DM, Email, Google Form, etc).
+-- </details>
+--
+--   ]] .. clipboard .. "\n```"
+--
+-- 	-- Step 4: Write to file
+-- 	local f = io.open(filename, "w")
+-- 	if f then
+-- 		f:write(prompt)
+-- 		f:close()
+-- 	else
+-- 		vim.notify("❌ Failed to write job file", vim.log.levels.ERROR)
+-- 		return
+-- 	end
+--
+-- 	-- Step 5: Open in current tab
+-- 	vim.cmd("edit " .. filename)
+--
+-- 	-- Step 6: Copy prompt to clipboard
+-- 	vim.fn.system("wl-copy", prompt)
+--
+-- 	vim.notify("✅ JD prompt created: " .. vim.fn.fnamemodify(filename, ":t"))
+-- end, { desc = "Create job prompt from clipboard (JD)" })
+--
 -- ╰───────────── Block End ─────────────╯
+--
+
+vim.keymap.set("n", "<leader>pj", function()
+	local jobdir = "/run/media/sj/developer/web/L1B11/career/JobDocuments/jobDescription/"
+	local base = jobdir .. "jd"
+	local ext = ".md"
+
+	-- Get clipboard content
+	local clipboard = vim.fn.system("wl-paste")
+	clipboard = clipboard:gsub("\r", "")
+
+	-- Find next available filename
+	local filename = base .. ext
+	local i = 1
+	while vim.fn.filereadable(filename) == 1 do
+		filename = base .. i .. ext
+		i = i + 1
+	end
+
+	-- Get current date
+	local date = os.date("%Y-%m-%d")
+
+	-- Build the full LLM prompt as markdown
+	local prompt = [[
+### 📋 LLM TASK INSTRUCTIONS  
+📅 Date: ]] .. date .. [[
+
+You are an expert job formatter.
+
+---
+
+#### 🔧 Your Task:
+1. Read and **explain the job** in human-friendly detail: role, company, location, compensation, type.  
+2. **Convert all currencies to BDT**, keeping the original.  
+3. **Convert timezones to GMT+6** (Dhaka), keeping the original.  
+4. **Categorize stack** into:  
+   - ✅ Required stack  
+   - 🔧 Mentioned/optional stack  
+5. **Explain how to apply**, if mentioned (email, form, DM, etc.)  
+6. **Then generate a README-style markdown summary** using this exact structure:
+7. My skills are: ["JavaScript", "Markdown", "Lua", "React", "React Router", "TanStack Query", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "Firebase", "JWT", "Surge", "Netlify", "Figma", "Neovim", "Tmux", "Zsh", "Kitty", "SurfingKeys", "Hyprland", "EndeavourOS", "HTML", "CSS"]
+8. I have hands on practice with professional course and projectsmore than 5
+9. so clarify how much the job requirement match with me 
+
+```markdown
+### 1. `🏢 Company Name — Job Title - (onsite/remote)- date - bdt salary`
+
+<pre><code>
+📅 Applied On: ]] .. date .. [[
+💰 Stipend/Salary : Original ≈ Converted BDT / Monthly
+⏰ Hours: Bangladesh Time → Original Timezone
+🧰 Stack: Required Tech Stack
+📆 Interview Date: (If known or write "Not yet scheduled")
+🌐 Location: Full Location + Timezone
+🧭 Platform: Source or Application method
+⏳ Status: 🟡 Pending or other
+</code></pre>
+
+🔗 [Company Website](url) `url` <br />
+🔗 [Job Link](link) `link`
+---
+
+]] .. clipboard .. "\n```"
+
+	-- Write prompt to the file
+	local f = io.open(filename, "w")
+	if f then
+		f:write(prompt)
+		f:close()
+	else
+		vim.notify("❌ Failed to write job file", vim.log.levels.ERROR)
+		return
+	end
+
+	-- Open in current buffer
+	vim.cmd("edit " .. filename)
+
+	-- Copy prompt to system clipboard
+	vim.fn.system("wl-copy", prompt)
+
+	vim.notify("✅ JD prompt created: " .. vim.fn.fnamemodify(filename, ":t"))
+end, { desc = "Create job prompt from clipboard (JD)" })

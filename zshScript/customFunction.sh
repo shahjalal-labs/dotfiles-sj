@@ -701,7 +701,7 @@ zle -N fzf_history_search
 bindkey '^R' fzf_history_search
 
 
-rn() {
+r() {
     local tempfile="$(mktemp -t tmp.XXXXXX)"
     command ranger \
         --cmd="map q chain shell echo %d > \"$tempfile\"; quitall" \
