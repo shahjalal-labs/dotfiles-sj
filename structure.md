@@ -2,6 +2,7 @@
 
 ```bash
 .
+├── ghAbout.md
 ├── hypr
 │   └── hyprland.conf
 ├── keyd
@@ -119,7 +120,63 @@
 │   ├── readmeGenerateFull.md
 │   ├── README.md
 │   └── structure.md
+├── ranger
+│   ├── commands.py
+│   ├── developer.md
+│   ├── keybindings
+│   │   └── navigation.conf
+│   ├── public
+│   │   └── CNAME
+│   ├── rc.conf
+│   ├── README.md
+│   ├── refractorRangerPrompt.md
+│   ├── scope.sh
+│   └── structure.md
 ├── README.md
+├── structure.md
+├── surfingKeys
+│   ├── bun.lock
+│   ├── package.json
+│   ├── random.md
+│   ├── readmeGenerate.md
+│   ├── README.md
+│   ├── src
+│   │   ├── assets
+│   │   │   └── screenshots
+│   │   │       ├── ss-12-42-27-AM_03-07-25.png
+│   │   │       └── ss-12-59-05-AM_03-07-25.png
+│   │   ├── modules
+│   │   │   ├── defaultRemapped.js
+│   │   │   ├── fzfFinder.js
+│   │   │   ├── github.js
+│   │   │   ├── hoverClick
+│   │   │   │   └── hoverClick.js
+│   │   │   ├── markdown
+│   │   │   │   └── markdown.js
+│   │   │   ├── opener
+│   │   │   │   ├── aiOpener.js
+│   │   │   │   ├── islamicOpener.js
+│   │   │   │   ├── mernOpener.js
+│   │   │   │   ├── opener.js
+│   │   │   │   ├── PH
+│   │   │   │   │   ├── PhHelp
+│   │   │   │   │   │   └── phHelp.js
+│   │   │   │   │   └── PhWeb
+│   │   │   │   │       └── phWeb.js
+│   │   │   │   ├── phOpener.js
+│   │   │   │   ├── resourceOpener.js
+│   │   │   │   ├── socialOpener.js
+│   │   │   │   └── webDevOpener.js
+│   │   │   ├── testDate.js
+│   │   │   └── yank
+│   │   │       ├── imgYank.js
+│   │   │       └── urlYanker.js
+│   │   └── settings
+│   │       ├── settings.js
+│   │       └── theme.js
+│   ├── structure.md
+│   ├── surfingkeys.bundle.js
+│   └── surfingkeys.js
 ├── tmux
 │   ├── customBingdings.conf
 │   ├── plugins.conf
@@ -127,8 +184,10 @@
 │   ├── statusline.conf
 │   └── visuals.conf
 ├── tmux.conf
-├── tmuxModularized
-│   └── customBingdings.conf
+├── tmuxModule
+│   ├── customBingdings.conf
+│   └── tmuxShellScript
+│       └── tmuxKillPane.sh
 ├── yazi
 │   ├── keymap.toml
 │   ├── refractorYaziPrompt.md
@@ -202,6 +261,6 @@
     └── tmuxModular
         └── plugins.conf
 
-27 directories, 173 files
+44 directories, 215 files
 
 ```
