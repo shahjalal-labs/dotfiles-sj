@@ -27,3 +27,40 @@
 ### --w: `22/04/2025 01:57 AM TUE GMT+6 Sharifpur, Gazipur, Dhaka`
 
 --w: 22/04/2025 01:57 অপরাহ্ণ মঙ্গল GMT+6 Sharifpur, Gazipur, Dhaka
+
+# 🗃️ Shahjalal's Dotfiles & Configs
+
+<p align="center">
+  <img src="./assets/Banner.jpg" alt="Md. Shahjalal" width="100%" />
+</p>
+![mdshahjalal5](https://ibb.co.com/WpPtYLxP)
+
+---
+
+## 👋 Assalamu Alaikum! I'm **Md. Shahjalal**
+
+Experienced **MERN Stack Developer** & Linux enthusiast focused on building scalable, maintainable, and high-performance tools and workflows.
+
+- Terminal-first workflow on **Hyprland (Wayland)** & **EndeavourOS**
+- Daily driver: **Neovim**, **Tmux**, **Zsh**, **Hyprland**, **keyd**, **ranger**, **SurfingKeys**, and more
+- Passionate about productivity, clean architecture, and modular configuration
+
+---
+
+## 📁 Repo Overview
+
+This repository houses **all my personal dotfiles and configs**, structured for easy navigation, modularity, and scalability.
+
+```bash
+.
+├── tmux                 # Tmux configs & custom bindings
+├── nvim                 # Neovim config & plugins
+├── zshScript            # Zsh scripts & custom functions
+├── ranger               # Ranger file manager config & extensions
+├── keyd                 # Keyboard remapping configs
+├── hypr                 # Hyprland Wayland compositor configs
+├── surfingKeys          # SurfingKeys browser extension customizations
+├── tmuxModule           # Modular tmux scripts & utilities
+└── README.md            # This documentation
+
+```
