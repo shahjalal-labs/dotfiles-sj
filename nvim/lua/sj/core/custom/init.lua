@@ -1,7 +1,5 @@
 require("sj.core.custom.insertMode")
 require("sj.core.custom.others")
--- require("sj.core.custom.tmuxZsh")
--- require("sj.core.custom.tmuxZsh2")
 require("sj.core.custom.checking-feature")
 require("sj.core.custom.normalModeInInrsert")
 require("sj.core.custom.html")

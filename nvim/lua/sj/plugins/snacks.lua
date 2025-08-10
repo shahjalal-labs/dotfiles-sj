@@ -85,7 +85,7 @@ return {
 				desc = "Command History",
 			},
 			{
-				"<leader>,e",
+				"<leader>,,",
 				function()
 					Snacks.explorer()
 				end,
@@ -213,7 +213,7 @@ return {
 				desc = "Dismiss Notifications",
 			},
 			{
-				"<leader>,,",
+				"<leader>,e",
 				function()
 					Snacks.picker.buffers()
 				end,

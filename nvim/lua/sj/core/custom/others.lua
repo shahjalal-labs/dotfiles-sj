@@ -114,6 +114,7 @@ local function url_encode(str)
 	return str
 end
 
+-- ╭──────────── Block Start ────────────╮
 -- Function to search Google with the current line or visual selection
 function _G.search_google_selection()
 	local query_text = ""
@@ -158,6 +159,8 @@ end
 vim.api.nvim_set_keymap("n", "<leader>sg", ":lua search_google_selection()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<leader>sg", ":<C-u>lua search_google_selection()<CR>", { noremap = true, silent = true })
 
+-- ╰───────────── Block End ─────────────╯
+
 -- ╭──────────── Block Start ────────────╮
 --
 -- vim.keymap.set("n", "<leader>pj", function()
@@ -165,11 +168,11 @@ vim.api.nvim_set_keymap("v", "<leader>sg", ":<C-u>lua search_google_selection()<
 -- 	local base = jobdir .. "jd"
 -- 	local ext = ".md"
 --
--- 	-- Step 1: Read clipboard
+-- 	-- Get clipboard content
 -- 	local clipboard = vim.fn.system("wl-paste")
--- 	clipboard = clipboard:gsub("\r", "") -- clean carriage return
+-- 	clipboard = clipboard:gsub("\r", "")
 --
--- 	-- Step 2: Find next available filename
+-- 	-- Find next available filename
 -- 	local filename = base .. ext
 -- 	local i = 1
 -- 	while vim.fn.filereadable(filename) == 1 do
@@ -177,44 +180,90 @@ vim.api.nvim_set_keymap("v", "<leader>sg", ":<C-u>lua search_google_selection()<
 -- 		i = i + 1
 -- 	end
 --
--- 	-- Step 3: Prompt template
+-- 	-- Get current date
+-- 	local date = os.date("%Y-%m-%d")
+--
+-- 	-- Build the full LLM prompt as markdown
 -- 	local prompt = [[
--- ### 📋 INSTRUCTIONS:
--- You are a job formatter. Convert the following **raw job description** into a structured and detailed markdown format like the sample below.
+-- ### 📋 LLM TASK INSTRUCTIONS
+-- 📅 Date: ]] .. date .. [[
+--
+-- You are an expert job formatter.
+--
+-- ---
 --
 -- #### 🔧 Your Task:
--- 1. Extract key information: company name, title, location, timezone, type, stack (required & optional), how to apply.
--- 2. Convert currencies to BDT and show original.
--- 3. Convert timezones to GMT+6 (Dhaka), retain original too.
--- 4. Generate output using this exact markdown structure:
+-- 1. Read and **explain the job** in human-friendly detail: role, company, location, compensation, type.
+-- 2. **Convert all currencies to BDT and monthly**, keeping the original .
+-- 3. **Convert timezones to GMT+6** (Dhaka), keeping the original.
+-- 4. **Categorize stack** into:
+--    - ✅ Required stack
+--    - 🔧 Mentioned/optional stack
+-- 5. **Explain how to apply**, if mentioned (email, form, DM, etc.)
+-- 7. My skills are: ["JavaScript", "Markdown", "Lua", "React", "React Router", "TanStack Query", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "Firebase", "JWT", "Surge", "Netlify", "Figma", "Neovim", "Tmux", "Zsh", "Kitty", "SurfingKeys", "Hyprland", "EndeavourOS", "HTML", "CSS"]
+-- 8. I have hands on practice with professional course and projectsmore than 5
+-- 9. so clarify how much the job requirement match with me
+-- 10. I’ve completed 5+ hands-on real-world MERN projects, built with scalable architecture and CLI workflow.
+--     Here are my best examples:
 --
+--       🌐 DeshGuide – Tourism Management System
+--     🔗 Live: https://deshguide.surge.sh
+--
+--     💼 WorkElevate – Job Portal
+--     🔗 Live: https://workelevate.surge.sh
+--
+--     🧑‍🍳 FlavorBook – Recipe Sharing + Marketplace
+--     🔗 Live: https://flavor-book.surge.sh
+--
+--     🎓 EduVerse – Group Assignment Platform
+--     🔗 Live: https://edu-verse.surge.sh
+--
+--     🖥️ My Portfolio (v2)
+--     🔗 Live: https://shahjalal-labs.surge.sh
+--     🚀 GitHub Profile: https://github.com/shahjalal-labs
+--
+-- 11. Based on the job description, rate how well my skills match this job:
+--     - % match or keyword overlap
+--     - Any strong alignment you find
+--     - Mention projects from my GitHub that reflect this
+--
+-- 12. Give a match score out of 10 with a short reason.
+--
+-- 13. Tell me if the job supports or restricts my Linux-first terminal workflow (Hyprland, Tmux, Neovim, Zsh, Kitty, etc.)
+--
+-- 14. If the job includes frontend/backend stacks, suggest any gaps I should fill, e.g., missing skill or tool.
+--
+-- 15. If the company is named, provide:
+--     - Quick company summary (size, country, sector)
+--     - If remote, confirm timezone overlap with Bangladesh
+--
+-- 16. If any requirement looks vague, confusing, or a red flag, highlight it.
+--
+-- 17. **Then generate a README-style markdown summary** using this exact structure:
 -- ```markdown
--- ### 1. `🏢 Company Name — Job Title`
+-- ---
+-- ### 1. `🏢 Company Name — Job Title - (onsite/remote)- date - bdt salary`
 --
 -- <pre><code>
--- 📅 Applied On: (Not yet applied)
--- 💰 Stipend/Salary : ORIGINAL ≈ BDT / Monthly
--- ⏰ Hours: Dhaka Time (GMT+6) → Original Timezone
--- 🧰 Stack: Required stacks
--- 📆 Interview Date: (Not yet scheduled)
--- 🌐 Location: Full Location + timezone
--- 🧭 Platform: Application Source (e.g., Discord/Email)
--- ⏳ Status: 🟡 Pending
+-- 📅 Applied On: foramt: 31/12/25 ]] .. date .. [[
+-- 💰 Stipend/Salary : Original ≈ Converted BDT / Monthly
+-- ⏰ Hours: Bangladesh Time → Original Timezone
+-- 🧰 Stack: Required Tech Stack
+-- ❌ Lack Stack: It will be  Dynamic not static – Based on Job Requirements: For your example added: mysql, postgres, redis, docker, nginx, aws, gcp, azure, firebase, netlify, surge, figma, sketch, etc.
+-- 📆 Interview Date: (If known or write "Not yet scheduled")
+-- 🌐 Location: Full Location + Timezone
+-- 🧭 Platform: Source or Application method
+-- ⏳ Status: 🟡 Pending or other
+-- 📞  Follow-Up way:  career@remoteoffice.io
 -- </code></pre>
 --
--- 🔗 [Company Website]() `url` <br />
--- 🔗 [Job Link]() `link`
+-- 🔗 [Company Website](url) `url` <br />
+-- 🔗 [Job Link](link) `link: first 30 chars...`
+-- ---
 --
--- <details>
--- <summary>📓 Notes</summary>
+-- ]] .. clipboard .. "\n```"
 --
--- - Mention any assumptions or missing info.
--- - Application method (DM, Email, Google Form, etc).
--- </details>
---
---   ]] .. clipboard .. "\n```"
---
--- 	-- Step 4: Write to file
+-- 	-- Write prompt to the file
 -- 	local f = io.open(filename, "w")
 -- 	if f then
 -- 		f:write(prompt)
@@ -224,22 +273,49 @@ vim.api.nvim_set_keymap("v", "<leader>sg", ":<C-u>lua search_google_selection()<
 -- 		return
 -- 	end
 --
--- 	-- Step 5: Open in current tab
+-- 	-- Open in current buffer
 -- 	vim.cmd("edit " .. filename)
 --
--- 	-- Step 6: Copy prompt to clipboard
+-- 	-- Copy prompt to system clipboard
 -- 	vim.fn.system("wl-copy", prompt)
 --
 -- 	vim.notify("✅ JD prompt created: " .. vim.fn.fnamemodify(filename, ":t"))
 -- end, { desc = "Create job prompt from clipboard (JD)" })
---
 -- ╰───────────── Block End ─────────────╯
 --
-
+--
+--
+--w: ╭──────────── Block Start ────────────╮
+-- Create new job description prompt with auto-incremented Tracker number
 vim.keymap.set("n", "<leader>pj", function()
 	local jobdir = "/run/media/sj/developer/web/L1B11/career/JobDocuments/jobDescription/"
+	local tracker_path = "/run/media/sj/developer/web/L1B11/career/JobDocuments/Tracker/Tracker.md"
 	local base = jobdir .. "jd"
 	local ext = ".md"
+
+	-- Read Tracker.md to find the last job number
+	local tracker_content = vim.fn.readfile(tracker_path)
+	local last_number = nil
+	for i = #tracker_content, 1, -1 do
+		local line = tracker_content[i]
+		local num = line:match("^###%s*(%d+%.%d+)%s*`🏢")
+		if num then
+			last_number = num
+			break
+		end
+	end
+
+	if not last_number then
+		vim.notify("❌ Could not find last number in Tracker.md", vim.log.levels.ERROR)
+		return
+	end
+
+	-- Increment both major and minor parts
+	local major, minor = last_number:match("(%d+)%.(%d+)")
+	major, minor = tonumber(major), tonumber(minor)
+	major = major + 1
+	minor = minor + 1
+	local new_number = string.format("%d.%02d", major, minor)
 
 	-- Get clipboard content
 	local clipboard = vim.fn.system("wl-paste")
@@ -253,10 +329,10 @@ vim.keymap.set("n", "<leader>pj", function()
 		i = i + 1
 	end
 
-	-- Get current date
+	-- Current date
 	local date = os.date("%Y-%m-%d")
 
-	-- Build the full LLM prompt as markdown
+	-- Build the LLM prompt
 	local prompt = [[
 ### 📋 LLM TASK INSTRUCTIONS  
 📅 Date: ]] .. date .. [[
@@ -267,38 +343,76 @@ You are an expert job formatter.
 
 #### 🔧 Your Task:
 1. Read and **explain the job** in human-friendly detail: role, company, location, compensation, type.  
-2. **Convert all currencies to BDT**, keeping the original.  
+2. **Convert all currencies to BDT and monthly**, keeping the original .  
 3. **Convert timezones to GMT+6** (Dhaka), keeping the original.  
 4. **Categorize stack** into:  
    - ✅ Required stack  
    - 🔧 Mentioned/optional stack  
 5. **Explain how to apply**, if mentioned (email, form, DM, etc.)  
-6. **Then generate a README-style markdown summary** using this exact structure:
 7. My skills are: ["JavaScript", "Markdown", "Lua", "React", "React Router", "TanStack Query", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "Firebase", "JWT", "Surge", "Netlify", "Figma", "Neovim", "Tmux", "Zsh", "Kitty", "SurfingKeys", "Hyprland", "EndeavourOS", "HTML", "CSS"]
 8. I have hands on practice with professional course and projectsmore than 5
 9. so clarify how much the job requirement match with me 
+10. I’ve completed 5+ hands-on real-world MERN projects, built with scalable architecture and CLI workflow.  
+    Here are my best examples:
 
+      🌐 DeshGuide – Tourism Management System  
+    🔗 Live: https://deshguide.surge.sh
+
+    💼 WorkElevate – Job Portal  
+    🔗 Live: https://workelevate.surge.sh
+
+    🧑‍🍳 FlavorBook – Recipe Sharing + Marketplace  
+    🔗 Live: https://flavor-book.surge.sh
+
+    🎓 EduVerse – Group Assignment Platform  
+    🔗 Live: https://edu-verse.surge.sh
+
+    🖥️ My Portfolio (v2)  
+    🔗 Live: https://shahjalal-labs.surge.sh
+    🚀 GitHub Profile: https://github.com/shahjalal-labs
+
+11. Based on the job description, rate how well my skills match this job:  
+    - % match or keyword overlap  
+    - Any strong alignment you find  
+    - Mention projects from my GitHub that reflect this
+
+12. Give a match score out of 10 with a short reason.
+
+13. Tell me if the job supports or restricts my Linux-first terminal workflow (Hyprland, Tmux, Neovim, Zsh, Kitty, etc.)
+
+14. If the job includes frontend/backend stacks, suggest any gaps I should fill, e.g., missing skill or tool.
+
+15. If the company is named, provide:  
+    - Quick company summary (size, country, sector)  
+    - If remote, confirm timezone overlap with Bangladesh
+
+16. If any requirement looks vague, confusing, or a red flag, highlight it.
+
+
+17. **Then generate a README-style markdown summary** using this exact structure in the markdown don't keep extra data. markdown summary strictly from ### number to down the job link line and the final --- :
 ```markdown
-### 1. `🏢 Company Name — Job Title - (onsite/remote)- date - bdt salary`
+### ]] .. new_number .. [[ `🏢 Company Name — Job Title - onsite/remote - date with foramt: 31/12/25 - bdt salary with BDT suffix`
 
 <pre><code>
-📅 Applied On: ]] .. date .. [[
+📅 Applied On: foramt: 31/12/25 ]] .. date .. [[
 💰 Stipend/Salary : Original ≈ Converted BDT / Monthly
 ⏰ Hours: Bangladesh Time → Original Timezone
 🧰 Stack: Required Tech Stack
+❌ Lack Stack: It will be  Dynamic not static – Based on Job Requirements: For your example added: mysql, postgres, redis, docker, nginx, aws, gcp, azure, firebase, netlify, surge, figma, sketch, etc.
 📆 Interview Date: (If known or write "Not yet scheduled")
 🌐 Location: Full Location + Timezone
 🧭 Platform: Source or Application method
 ⏳ Status: 🟡 Pending or other
+📞  Follow-Up way:  career@remoteoffice.io
 </code></pre>
 
 🔗 [Company Website](url) `url` <br />
-🔗 [Job Link](link) `link`
+🔗 [Job Link](link) `link: first 30 chars...`
 ---
 
 ]] .. clipboard .. "\n```"
 
-	-- Write prompt to the file
+	-- Write to file
 	local f = io.open(filename, "w")
 	if f then
 		f:write(prompt)
@@ -308,11 +422,10 @@ You are an expert job formatter.
 		return
 	end
 
-	-- Open in current buffer
+	-- Open file and copy prompt to clipboard
 	vim.cmd("edit " .. filename)
-
-	-- Copy prompt to system clipboard
 	vim.fn.system("wl-copy", prompt)
 
-	vim.notify("✅ JD prompt created: " .. vim.fn.fnamemodify(filename, ":t"))
+	vim.notify("✅ JD prompt created: " .. vim.fn.fnamemodify(filename, ":t") .. " (" .. new_number .. ")")
 end, { desc = "Create job prompt from clipboard (JD)" })
+-- ╰───────────── Block End ─────────────╯
