@@ -2,7 +2,7 @@
 
 #p: copy backup files in backup dir & push to GitHub
 
-backup_dir="/run/media/sj/developer/allDotfilesBackupEndeavourOs"
+backup_dir="/run/media/sj/developer/dotfiles-sj"
 mkdir -p "$backup_dir"
 
 # 🔄 Backup dotfiles
@@ -33,5 +33,5 @@ git -C "$backup_dir" push
 tmux display-message "✅ Dotfiles pushed to GitHub!"
 
 # 🌐 Open GitHub repo in browser
-gh repo view shahjalal-labs/allDotfilesBackupEndeavourOs --web
+gh repo view shahjalal-labs/dotfiles-sj --web
 
