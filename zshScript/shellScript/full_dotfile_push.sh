@@ -13,7 +13,8 @@ rsync -a --delete /etc/keyd/ "$backup_dir/keyd/"
 rsync -a --delete ~/.config/yazi/ "$backup_dir/yazi/"
 rsync -a --delete ~/.config/hypr/ "$backup_dir/hypr/"
 rsync -a --delete /run/media/sj/developer/zshScript/ "$backup_dir/zshScript/"
-rsync -a --delete ~/.config/tmux/ "$backup_dir/tmuxModularized/"
+rsync -a --delete ~/.config/tmux/ "$backup_dir/tmuxModule/"
+rsync -a --delete ~/.config/ranger/ "$backup_dir/ranger/"
 
 # ✅ Use commit message from the argument
 commit_msg="$1"
