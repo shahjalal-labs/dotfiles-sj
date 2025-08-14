@@ -1,9 +1,9 @@
--- ╭──────────── Block Start ────────────╮
+-- w: ╭──────────── Block Start ────────────╮
+-- w: ╰───────────── Block End ─────────────╯
 
--- ╰───────────── Block End ─────────────╯
-
---go to package.json file
-vim.keymap.set("n", "<leader>pp", function()
+-- w: ╭──────────── Block Start ────────────╮
+-- go to package.json file
+vim.keymap.set("n", "<leader>np", function()
 	local package_json_path = vim.fn.findfile("package.json", ".;")
 	if package_json_path ~= "" then
 		vim.cmd("edit " .. package_json_path)
@@ -11,18 +11,35 @@ vim.keymap.set("n", "<leader>pp", function()
 		print("No package.json file found in the current project.")
 	end
 end, { noremap = true, silent = true, desc = "Open package.json" })
+-- w: ╰───────────── Block End ─────────────╯
 
--- Search for index.css under the src directory, starting from the current directory
-vim.keymap.set("n", "<leader>fi", function()
+--
+--w: ╭──────────── Block Start ────────────╮
+-- Open css file for react/nextJs projects
+vim.keymap.set("n", "<leader>nc", function()
+	-- First: search src/index.css
 	local index_css_path = vim.fn.findfile("src/index.css", ".;")
 	if index_css_path ~= "" then
 		vim.cmd("edit " .. index_css_path)
-	else
-		print("No src/index.css file found in the current project.")
+		print("Opened: " .. index_css_path)
+		return
 	end
-end, { noremap = true, silent = true, desc = "Open src/index.css" })
 
--- Define the function
+	-- Fallback: src/app/globals.css
+	local globals_css_path = vim.fn.findfile("src/app/globals.css", ".;")
+	if globals_css_path ~= "" then
+		vim.cmd("edit " .. globals_css_path)
+		print("Opened fallback: " .. globals_css_path)
+	else
+		print("No src/index.css or src/app/globals.css found in the current project.")
+	end
+end, { noremap = true, silent = true, desc = "Open css file for react/nextJs" })
+--w: ╰───────────── Block End ─────────────╯
+--
+--
+--
+-- w: ╭──────────── Block Start ────────────╮
+-- go to router.jsx file for react projects
 local function goToRouterJsx()
 	local paths = {
 		"src/router.jsx",
@@ -48,10 +65,13 @@ local function goToRouterJsx()
 		print("router.jsx not found.")
 	end
 end
-
--- Bind it to <leader>ae
-vim.keymap.set("n", "<leader>ae", goToRouterJsx, { desc = "Open router.jsx" })
-
+vim.keymap.set("n", "<leader>nn", goToRouterJsx, { desc = "Open router.jsx" })
+-- w: ╰───────────── Block End ─────────────╯
+--
+--
+--
+-- w: ╭──────────── Block Start ────────────╮
+-- go to main.jsx/layout.jsx/tsx/js/ts file for react/nextJs projects
 local function goToMainOrLayout()
 	local function open_file(path)
 		vim.cmd("edit " .. path)
@@ -88,10 +108,14 @@ local function goToMainOrLayout()
 		print("No main.jsx or layout file found.")
 	end
 end
+-- Bind to <leader>nm
+vim.keymap.set("n", "<leader>nm", goToMainOrLayout, { desc = "Open main.jsx" })
+-- w: ╰───────────── Block End ─────────────╯
 
--- Bind to <leader>am
-vim.keymap.set("n", "<leader>am", goToMainOrLayout, { desc = "Open main.jsx" })
-
+--
+--
+--
+-- w: ╭──────────── Block Start ────────────╮
 -- Lua function to open the README.md file from the project root
 local function openProjectReadme()
 	local util = require("lspconfig.util") -- Neovim LSP util for root detection
@@ -112,4 +136,5 @@ local function openProjectReadme()
 end
 
 -- Optional: map it to a keybinding (like <leader>rd)
-vim.keymap.set("n", "<leader>rd", openProjectReadme, { desc = "Open project root README.md" })
+vim.keymap.set("n", "<leader>nr", openProjectReadme, { desc = "Open project root README.md" })
+-- w: ╰───────────── Block End ─────────────╯
