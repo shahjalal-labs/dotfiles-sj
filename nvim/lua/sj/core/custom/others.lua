@@ -391,7 +391,7 @@ You are an expert job formatter.
 
 17. **Then generate a README-style markdown summary** using this exact structure in the markdown don't keep extra data. markdown summary strictly from ### number to down the job link line and the final --- :
 ```markdown
-### ]] .. new_number .. [[ `🏢 Company Name — Job Title - onsite/remote - date with foramt: 31/12/25 - bdt salary with BDT suffix`
+### ]] .. new_number .. [[ `🏢 Company Name — Job Title - onsite/remote - date with foramt: 31/12/25 - BDT salary`
 
 <pre><code>
 📅 Applied On: foramt: 31/12/25 ]] .. date .. [[

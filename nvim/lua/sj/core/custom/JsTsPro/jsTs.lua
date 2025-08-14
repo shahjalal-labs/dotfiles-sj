@@ -245,25 +245,6 @@ vim.api.nvim_set_keymap(
 -- vim.keymap.set({ "n", "x", "t", "o" }, ",", "<Cmd>HopChar1<CR>", { noremap = true, silent = true })
 -- by go starting of the line and press a space
 vim.keymap.set("n", "I", "I <Left>", { noremap = true, silent = true })
--- vim.keymap.set("n", "I", "I ", { noremap = true, silent = true })
-
--- vim.keymap.set("i", "<C-,>", ",", { noremap = true, silent = true })
--- vim.keymap.set("i", "<S-f><S-f>", "F", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("n", "sk", ":HopChar2<CR>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("n", "sw", ":HopWord<CR>", { noremap = true, silent = true })
--- vim.keymap.set({ "n", "i", "x", "t" }, "sj", "<Cmd>HopChar1<CR>", { noremap = true, silent = true })
--- vim.keymap.set({ "n", "i", "x", "t" }, "<M-f3>", "<Cmd>HopChar1<CR>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("n", "sp", ":HopLine<CR>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap({ "n", "i" }, "sl", "<Cmd>HopLineStart<CR>", { noremap = true, silent = true })
--- vim.keymap.set({ "n", "i" }, "sl", "<Cmd>HopLineStart<CR>", { noremap = true, silent = true })
---
---
---
---
---
---
---
---
 --
 --
 --
@@ -296,3 +277,45 @@ vim.keymap.set("n", "<space>ac", CopyGitRemote, { desc = "Copy git remote URL to
 --
 --
 --
+-- Universal to camelCase converter
+-- Convert any text format to camelCase
+local function to_camel_case(str)
+	-- Replace separators with space
+	str = str:gsub("[%-%._/]", " ")
+	-- Add space before camelCase caps
+	str = str:gsub("(%l)(%u)", "%1 %2")
+	-- Lowercase everything
+	str = str:lower()
+
+	-- Split into words
+	local words = {}
+	for word in str:gmatch("%S+") do
+		table.insert(words, word)
+	end
+
+	-- Capitalize all except first
+	for i = 2, #words do
+		words[i] = words[i]:sub(1, 1):upper() .. words[i]:sub(2)
+	end
+
+	return table.concat(words, "")
+end
+
+-- Paste in normal mode
+local function paste_camel_normal()
+	local clipboard = vim.fn.getreg("+")
+	local camel = to_camel_case(clipboard)
+	vim.fn.setreg("+", camel)
+	vim.api.nvim_feedkeys('"+p', "n", false)
+end
+
+-- Paste in insert mode
+local function paste_camel_insert()
+	local clipboard = vim.fn.getreg("+")
+	local camel = to_camel_case(clipboard)
+	vim.api.nvim_put({ camel }, "c", true, true)
+end
+
+-- Map in both modes
+vim.keymap.set("n", "<leader>uc", paste_camel_normal, { noremap = true, silent = true })
+vim.keymap.set("i", "<leader>uc", paste_camel_insert, { noremap = true, silent = true })

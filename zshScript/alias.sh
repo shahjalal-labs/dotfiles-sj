@@ -25,9 +25,11 @@ alias gi="git_push"
 alias d='nmcli device disconnect enp1s0'
 # Alias to disconnect modem
 alias ms="nmcli device disconnect enp0s20f0u1"
+alias ms2="nmcli device disconnect enp0s20f0u10"
 
 # Alias to reconnect modem
 alias mc="nmcli device connect enp0s20f0u1"
+alias mc2="nmcli device connect enp0s20f0u10"
 
 alias de='nmcli device connect enp1s0'
 alias pu='paru -Syu'
