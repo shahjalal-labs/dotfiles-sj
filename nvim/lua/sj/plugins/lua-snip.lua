@@ -1,3 +1,7 @@
+-- ╭──────────── Block Start ────────────╮
+
+-- ╰───────────── Block End ─────────────╯
+
 return {
 	{
 		"L3MON4D3/LuaSnip",
@@ -211,8 +215,73 @@ return {
 			--
 			--
 			--
-			--
-			--
+			--w: ╭──────────── Block Start ────────────╮
+			-- next js dynamicDetails component page create
+			-- PascalCase helper
+			local function pascal_case(str)
+				return (str:gsub("(%a)(%w*)", function(a, b)
+					return a:upper() .. b:lower()
+				end))
+			end
+
+			-- Get folder name + "Details"
+			local function get_component_name(_, snip)
+				local dir = snip.env.TM_DIRECTORY
+				local parent = dir:match(".*/([^/]+)/%[.-%]$")
+				if not parent then
+					return "ComponentDetails"
+				end
+				return pascal_case(parent) .. "Details"
+			end
+
+			-- Get dynamic param name inside []
+			local function get_param_name(_, snip)
+				local dir = snip.env.TM_DIRECTORY
+				local param = dir:match(".*/%[(.-)%]$")
+				return param or "id"
+			end
+
+			local function exit_to_normal_mode()
+				vim.schedule(function()
+					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+				end)
+			end
+
+			local function page_snippet(ft)
+				return {
+					s("d", {
+						t("const "),
+						f(get_component_name, {}),
+						t(" = async ({ params }) => {"),
+						t({ "", "  const p = await params;" }),
+						t({ "", "  console.log(p." }),
+						f(get_param_name, {}),
+						t({ ', "dynamicId in params", 3);', "", "", "  return (", "    <div>", "      <h2>" }),
+						f(get_component_name, {}),
+						i(0), -- Cursor will stop here
+						t({ "</h2>", "    </div>", "  );", "};", "", "export default " }),
+						f(get_component_name, {}),
+					}),
+				}
+			end
+
+			ls.add_snippets(nil, {
+				javascript = page_snippet("javascript"),
+				javascriptreact = page_snippet("javascriptreact"),
+				typescript = page_snippet("typescript"),
+				typescriptreact = page_snippet("typescriptreact"),
+			})
+
+			-- Hook to exit insert mode automatically after snippet expansion
+			ls.config.set_config({
+				store_selection_keys = "<Tab>",
+				updateevents = "TextChanged,TextChangedI",
+				-- Custom callback
+				snippet_exit = exit_to_normal_mode,
+			})
+			-- next js component
+			--w: ╰───────────── Block End ─────────────╯
+
 			--
 			--
 			--
