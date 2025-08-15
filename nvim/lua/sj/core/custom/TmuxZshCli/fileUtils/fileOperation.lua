@@ -25,7 +25,34 @@ end, { desc = "Open current file in browser (firefox/chrome)" })
 
 --w: 1╰───────────── Block End ─────────────╯
 --
---
+--w: 1╭──────────── Block Start ────────────╮
+-- Function to yank file path relative to Git root or CWD
+local function yank_relative_path()
+	local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+	local file_abs = vim.fn.expand("%:p")
+	local path
+
+	if git_root and git_root ~= "" then
+		path = vim.fn.fnamemodify(file_abs, ":." .. git_root)
+		print("Yanked file path relative to Git root: " .. path)
+	else
+		local cwd = vim.fn.getcwd()
+		path = vim.fn.fnamemodify(file_abs, ":." .. cwd)
+		print("Yanked file path relative to CWD: " .. path)
+	end
+
+	vim.fn.setreg("+", path)
+end
+
+-- Keymap with description
+vim.keymap.set("n", "<leader>sr", yank_relative_path, {
+	noremap = true,
+	silent = true,
+	desc = "Yank current file's relative path to clipboard",
+})
+
+--w: 1╰───────────── Block End ─────────────╯
+
 --
 --w: 2╭──────────── Block Start ────────────╮
 --t:copy the absolute path of the current file in Neovim using space sj

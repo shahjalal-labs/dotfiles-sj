@@ -1,15 +1,48 @@
+You are a **senior full-stack developer**.
+
+## 📌 Task
+
+You are given a real-world code module located at:
+
+```
+/home/sj/.config/ranger
+```
+
+Refactor the entire codebase **without modifying any UI or changing behavior**. Instead, improve it using:
+
+- ✅ Clear separation of concerns
+- ✅ Consistent, semantic naming conventions
+- ✅ Modular architecture (hooks, services, utils, components)
+- ✅ Scalable file/folder structure
+- ✅ Industry-standard project layout and architecture
+- ✅ Readable, testable, production-grade code
+- ✅ 100% behavior and API compatibility
+
+👉 Output the refactored code to a new folder: `ranger_refactored`
+
+Also return a `.sh` script that will:
+- Create that folder
+- Write all refactored files
+- Run `git add` and `git commit` with message: `refactor: added improved ranger version`
+
+---
+
 ## 🌲 Full Project Structure (cwd)
 
 ```bash
 /home/sj/.config/ranger
 ├── commands.py
+├── developer.md
 ├── keybindings
 │   └── navigation.conf
+├── public
+│   └── CNAME
 ├── rc.conf
+├── README.md
 ├── scope.sh
 └── structure.md
 
-2 directories, 5 files
+3 directories, 8 files
 ```
 
 ## 📁 Target Module Tree (ranger)
@@ -17,19 +50,22 @@
 ```bash
 /home/sj/.config/ranger
 ├── commands.py
+├── developer.md
 ├── keybindings
 │   └── navigation.conf
+├── public
+│   └── CNAME
 ├── rc.conf
+├── README.md
 ├── scope.sh
 └── structure.md
 
-2 directories, 5 files
+3 directories, 8 files
 ```
 
 ## 📄 Module Files & Contents
 
 ### `keybindings/navigation.conf`
-
 ```conf
 # =====================================
 # PROJECT-SPECIFIC NAVIGATION
@@ -60,8 +96,7 @@ map xf eval fm.cd('/run/media/sj/developer/web/L2B4/frontend-track')
 ```
 
 ### `structure.md`
-
-````md
+```md
 # 📁 Project Structure
 
 ```bash
@@ -74,10 +109,9 @@ map xf eval fm.cd('/run/media/sj/developer/web/L2B4/frontend-track')
 └── structure.md
 
 2 directories, 5 files
-```
-````
 
-````
+```
+```
 
 ### `scope.sh`
 ```sh
@@ -104,7 +138,7 @@ handle_extension() {
             atool --list -- "${FILE_PATH}" && exit 5
             bsdtar --list --file "${FILE_PATH}" && exit 5
             exit 1;;
-
+        
         ## Text/Code files (ADD THIS SECTION)
         js|jsx|ts|tsx|json|html|htm|css|scss|sass|less|vue|py|rb|go|rs|c|cpp|h|hpp|\
         java|php|sh|bash|zsh|fish|vim|lua|sql|yaml|yml|toml|ini|conf|config|\
@@ -118,7 +152,7 @@ handle_extension() {
             # Fallback to cat
             cat "${FILE_PATH}" && exit 5
             exit 2;;
-
+        
         ## PDF
         pdf)
             # Try to extract text
@@ -129,7 +163,7 @@ handle_extension() {
                 pdftoppm -f 1 -l 1 -scale-to-x 1920 -scale-to-y -1 -singlefile -jpeg -tiffcompression jpeg -- "${FILE_PATH}" "${IMAGE_CACHE_PATH%.*}" && \
                 exit 6
             exit 1;;
-
+        
         ## Video
         avi|mp4|wmv|dat|3gp|ogv|mkv|mpg|mpeg|vob|fl[icv]|m2v|mov|webm|ts|mts|m4v|r[am]|qt|divx|as[fx])
             # Thumbnail for video
@@ -139,12 +173,12 @@ handle_extension() {
             # Fallback to mediainfo
             mediainfo "${FILE_PATH}" && exit 5
             exit 1;;
-
+        
         ## Audio
         aac|flac|m4a|mid|midi|mpa|mp2|mp3|ogg|wav|wma|wv|opus)
             mediainfo "${FILE_PATH}" && exit 5
             exit 1;;
-
+        
         ## Image
         bmp|jpg|jpeg|png|gif|webp|tiff|tif|ico)
             [ "$PV_IMAGE_ENABLED" = 'True' ] && \
@@ -169,13 +203,13 @@ handle_mime() {
             # Fallback to cat
             cat "${FILE_PATH}" && exit 5
             exit 2;;
-
+        
         ## Image
         image/*)
             [ "$PV_IMAGE_ENABLED" = 'True' ] && exit 6
             identify "${FILE_PATH}" && exit 5
             exit 1;;
-
+        
         ## Video
         video/*)
             [ "$PV_IMAGE_ENABLED" = 'True' ] && \
@@ -183,7 +217,7 @@ handle_mime() {
                 exit 6
             mediainfo "${FILE_PATH}" && exit 5
             exit 1;;
-
+        
         ## PDF
         application/pdf)
             pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - | \
@@ -202,10 +236,9 @@ handle_mime "${MIMETYPE}"
 # Fallback
 echo '----- File Type Classification -----' && file --dereference --brief -- "${FILE_PATH}" && exit 5
 exit 1
-````
+```
 
 ### `rc.conf`
-
 ```conf
 # =====================================
 # TMUX + DEVELOPMENT WORKFLOW
@@ -244,8 +277,45 @@ set sort natural
 source /home/sj/.config/ranger/keybindings/navigation.conf
 ```
 
-### `commands.py`
+### `public/CNAME`
+```config/ranger/public/CNAME
+ranger.surge.sh
+```
 
+### `README.md`
+```md
+# 🌟 ranger
+
+## 📂 Project Information
+
+| 📝 **Detail**           | 📌 **Value**                                                              |
+|------------------------|---------------------------------------------------------------------------|
+| 🔗 **GitHub URL**       | [https://github.com/shahjalal-labs/ranger](https://github.com/shahjalal-labs/ranger)                                                                  |
+| 🌐 **Live Site**        | [https://ranger.surge.sh](https://ranger.surge.sh)                                                                  |
+| 💻 **Portfolio GitHub** | [https://github.com/shahjalal-labs/shahjalal-portfolio-v2](https://github.com/shahjalal-labs/shahjalal-portfolio-v2)                                                                  |
+| 🌐 **Portfolio Live**   | [http://shahjalal-labs.surge.sh](http://shahjalal-labs.surge.sh)                                                                  |
+| 📁 **Directory**        | `/home/sj/.config/ranger`                                                                      |
+| 📅 **Created On**       | `09/08/2025 06:10 অপরাহ্ণ শনি GMT+6`                                                                      |
+| 📍 **Location**         | Sharifpur, Gazipur, Dhaka                                                                        |
+| 💼 **LinkedIn**         | [https://www.linkedin.com/in/shahjalal-labs/](https://www.linkedin.com/in/shahjalal-labs/)                                                                  |
+| 📘 **Facebook**         | [https://www.facebook.com/shahjalal.labs](https://www.facebook.com/shahjalal.labs)                                                                  |
+| ▶️ **Twitter**          | [https://x.com/shahjalal_labs](https://x.com/shahjalal_labs)                                                                  |
+
+---
+### `Developer info:`
+![Developer Info:](https://i.ibb.co/kVR4YmrX/developer-Info-Github-Banner.png)
+
+> 🚀
+> 🧠
+
+```
+
+### `developer.md`
+```md
+-- Your developer.md content here --
+```
+
+### `commands.py`
 ```py
 
 import os
@@ -258,46 +328,46 @@ class react_setup(Command):
     """
     def execute(self):
         cwd = self.fm.thisdir.path
-
+        
         # Check for React project
         if not (os.path.exists(f"{cwd}/bun.lockb") or os.path.exists(f"{cwd}/package.json")):
             self.fm.notify("❌ Not a React project!", bad=True)
             return
-
+        
         # Execute tmux setup script
         script = f'''
         cd "{cwd}"
         SESSION=$(tmux display-message -p '#S')
         WINDOW=$(tmux display-message -p '#I')
         PANE_COUNT=$(tmux list-panes | wc -l)
-
+        
         # Create panes if needed
         if [ "$PANE_COUNT" -lt 3 ]; then
             tmux split-window -v -c "{cwd}"
             tmux split-window -h -c "{cwd}"
         fi
-
+        
         # Apply layout
         tmux select-layout main-horizontal
-
+        
         # Start nvim in pane 2 and bun dev in pane 3
         tmux send-keys -t 2 "cd '{cwd}' && nvim ." C-m
         tmux send-keys -t 3 "cd '{cwd}' && bun run dev" C-m
-
+        
         # Now swap pane 1 (ranger) with pane 2 (nvim)
         tmux swap-pane -s 1 -t 2
-
+        
         # Focus ranger pane (now in pane 2 after swap)
         tmux select-pane -t 2
         '''
-
+        
         try:
             subprocess.run(["bash", "-c", script], check=True)
             self.fm.notify("🚀 React environment setup complete!")
         except subprocess.CalledProcessError:
             self.fm.notify("❌ Failed to setup tmux environment", bad=True)
 
-## switch to yazi
+## switch to yazi 
 
 import tempfile
 from ranger.api.commands import Command
@@ -309,24 +379,24 @@ class switch_to_yazi(Command):
     """
     def execute(self):
         current_path = self.fm.thisdir.path
-
+        
         # Create temporary file to store yazi's final path
         with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.yazi_cwd') as tmp:
             tmp_path = tmp.name
-
+        
         try:
             # Run yazi with --cwd-file to capture final directory
             subprocess.run([
-                'yazi',
+                'yazi', 
                 current_path,  # Start yazi in current ranger directory
                 '--cwd-file', tmp_path  # Save final directory to temp file
             ], check=True)
-
+            
             # Read the final path from yazi
             if os.path.exists(tmp_path):
                 with open(tmp_path, 'r') as f:
                     final_path = f.read().strip()
-
+                
                 # Change ranger to yazi's final directory
                 if final_path and os.path.exists(final_path) and final_path != current_path:
                     self.fm.cd(final_path)
@@ -335,7 +405,7 @@ class switch_to_yazi(Command):
                     self.fm.notify("📁 Returned from yazi")
             else:
                 self.fm.notify("📁 Returned from yazi")
-
+                
         except subprocess.CalledProcessError:
             self.fm.notify("❌ Failed to launch yazi", bad=True)
         except FileNotFoundError:

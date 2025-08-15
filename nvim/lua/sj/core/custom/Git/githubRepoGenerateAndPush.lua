@@ -209,4 +209,9 @@ local function createGitRepoAndPushToGithub()
 	end)
 end
 
-vim.keymap.set("n", "<leader>gk", createGitRepoAndPushToGithub, { noremap = true, silent = true })
+vim.keymap.set(
+	"n",
+	"<leader>gk",
+	createGitRepoAndPushToGithub,
+	{ noremap = true, silent = true, desc = "github create push change cname add readme, developer.md" }
+)
