@@ -49,12 +49,12 @@ return {
 			":lua require('telescope.builtin').keymaps()<CR>",
 			{ noremap = true, silent = true }
 		)
-		keymap.set(
+		--[[ 		keymap.set(
 			{ "n", "i", "v", "o" },
 			"<M-j>",
 			"<cmd>Telescope find_files cwd=src<cr>",
 			{ desc = "Fuzzy find files in src directory" }
-		)
+		) ]]
 	end,
 }
 --w: 20/12/2024 07:48 PM Fri GMT+6 Sharifpur, Gazipur, Dhaka

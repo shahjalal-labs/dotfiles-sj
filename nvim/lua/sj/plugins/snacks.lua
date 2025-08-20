@@ -99,6 +99,13 @@ return {
 				desc = "Find Files",
 			},
 			{
+				"<M-j>",
+				function()
+					Snacks.picker.files()
+				end,
+				desc = "Find Files",
+			},
+			{
 				"<leader>,gb",
 				function()
 					Snacks.picker.git_branches()

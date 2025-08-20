@@ -162,7 +162,7 @@ end
 --
 --
 --
---
+-- color console
 vim.api.nvim_set_keymap("n", "<space>sd", ":lua ConsoleLogVariableWithColor()<CR>", { noremap = true, silent = true })
 --t:  ConsoleLogVariableWithColor
 function ConsoleLogVariableWithColor()

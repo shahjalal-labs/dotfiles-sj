@@ -1,6 +1,7 @@
 -- w: ╭──────────── Block Start ────────────╮
 --t: Function to send build and cp command to tmux pane
-function SendBuildCommandToTmuxPane()
+--
+--[[ function SendBuildCommandToTmuxPane()
 	vim.ui.input({ prompt = "Enter tmux pane number (default 2): " }, function(input)
 		-- If input is empty or nil, default to "2"
 		local pane = (input == nil or input == "") and "2" or input
@@ -13,7 +14,50 @@ function SendBuildCommandToTmuxPane()
 	end)
 end
 
+vim.api.nvim_set_keymap("n", "<leader>bb", ":lua SendBuildCommandToTmuxPane()<CR>", { noremap = true, silent = true }) ]]
+
+-- send build command based on react/next project
+-- ╭──────────── Block Start ────────────╮
+-- Function to detect project type and send appropriate build/deploy command to tmux
+function SendBuildCommandToTmuxPane()
+	-- Ask user for tmux pane number
+	vim.ui.input({ prompt = "Enter tmux pane number (default 2): " }, function(input)
+		local pane = (input == nil or input == "") and "2" or input
+
+		-- Read package.json
+		local package_json_path = vim.fn.getcwd() .. "/package.json"
+		local cmd
+
+		if vim.fn.filereadable(package_json_path) == 1 then
+			local content = vim.fn.readfile(package_json_path)
+			local package_str = table.concat(content, "\n")
+
+			local is_next = package_str:match('"next"%s*:')
+			local is_react = package_str:match('"react"%s*:')
+
+			if is_next then
+				cmd = "bunx vercel --prod"
+			elseif is_react then
+				cmd = "bun run build && cp dist/index.html dist/200.html && surge ./dist"
+			else
+				print("⚠️ Unknown project type, defaulting to React build...")
+				cmd = "bun run build && cp dist/index.html dist/200.html && surge ./dist"
+			end
+		else
+			print("⚠️ No package.json found, defaulting to React build...")
+			cmd = "bun run build && cp dist/index.html dist/200.html && surge ./dist"
+		end
+
+		-- Send command to tmux
+		local tmux_cmd = string.format("tmux send-keys -t %s '%s' Enter", pane, cmd)
+		vim.fn.system(tmux_cmd)
+		print("🚀 Command sent to tmux pane " .. pane .. ": " .. cmd)
+	end)
+end
+
+-- Map key
 vim.api.nvim_set_keymap("n", "<leader>bb", ":lua SendBuildCommandToTmuxPane()<CR>", { noremap = true, silent = true })
+-- ╰───────────── Block End ─────────────╯
 
 -- w: ╰───────────── Block End ─────────────╯
 
