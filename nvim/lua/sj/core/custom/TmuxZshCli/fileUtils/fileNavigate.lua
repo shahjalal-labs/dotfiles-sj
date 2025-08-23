@@ -138,3 +138,45 @@ end
 -- Optional: map it to a keybinding (like <leader>rd)
 vim.keymap.set("n", "<leader>nr", openProjectReadme, { desc = "Open project root README.md" })
 -- w: ╰───────────── Block End ─────────────╯
+-- w: ╭──────────── Block Start ────────────╮
+-- Go to .env or .env.local in the project root
+vim.keymap.set("n", "<leader>ne", function()
+	local candidates = { ".env", ".env.local" }
+
+	for _, file in ipairs(candidates) do
+		if vim.fn.filereadable(file) == 1 then
+			vim.cmd("edit " .. file)
+			print("Opened: " .. file)
+			return
+		end
+	end
+
+	print("No .env or .env.local found in current directory.")
+end, { noremap = true, silent = true, desc = "Open .env or .env.local" })
+-- w: ╰───────────── Block End ─────────────╯
+-- w: ╭──────────── Block Start ────────────╮
+-- From Neovim: open textNvim.md in tmux session alwaysNvim
+vim.keymap.set("n", "<leader>nw", function()
+	local file = "/run/media/sj/developer/web/L1B11/textNvim.md"
+	local session = "alwaysNvim"
+
+	-- Check if tmux is running
+	if vim.fn.exists("$TMUX") == 0 then
+		vim.notify("Not inside tmux!", vim.log.levels.ERROR)
+		return
+	end
+
+	-- Build tmux command
+	local cmd = string.format(
+		"tmux has-session -t %s 2>/dev/null "
+			.. "|| tmux new-session -ds %s 'nvim --cmd \"autocmd VimEnter * startinsert\" %s'; "
+			.. "tmux switch-client -t %s",
+		session,
+		session,
+		file,
+		session
+	)
+
+	vim.fn.system(cmd)
+end, { noremap = true, silent = true, desc = "Switch to alwaysNvim session with textNvim.md" })
+-- w: ╰───────────── Block End ─────────────╯

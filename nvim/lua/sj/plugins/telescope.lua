@@ -45,7 +45,7 @@ return {
 		keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
 		keymap.set(
 			"n",
-			"<leader>fa",
+			"<leader>fk",
 			":lua require('telescope.builtin').keymaps()<CR>",
 			{ noremap = true, silent = true }
 		)
