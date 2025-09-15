@@ -180,3 +180,16 @@ vim.keymap.set("n", "<leader>nw", function()
 	vim.fn.system(cmd)
 end, { noremap = true, silent = true, desc = "Switch to alwaysNvim session with textNvim.md" })
 -- w: ╰───────────── Block End ─────────────╯
+
+-- Function to open your Tracker.md file
+local function openTracker()
+	local tracker_path = "/run/media/sj/developer/web/L1B11/career/JobDocuments/Tracker/Tracker.md"
+	if vim.fn.filereadable(tracker_path) == 1 then
+		vim.cmd("edit " .. tracker_path)
+	else
+		vim.notify("Tracker.md not found at " .. tracker_path, vim.log.levels.WARN)
+	end
+end
+
+-- Map it to <leader>nt
+vim.keymap.set("n", "<leader>nt", openTracker, { desc = "Open Tracker.md" })

@@ -116,8 +116,8 @@ vim.keymap.set("n", "<leader>ds", generate_structure_md, {
 --w: 4╰───────────── Block End ─────────────╯
 
 --w: 5╭──────────── Block Start ────────────╮
--- Define the function
-local function generate_app_url()
+--
+--[[ local function generate_app_url()
 	-- Get current file path
 	local file_path = vim.fn.expand("%:p") -- full path
 
@@ -166,5 +166,61 @@ vim.keymap.set("n", "<leader>rp", generate_app_url, {
 	noremap = true,
 	silent = true,
 	desc = "🌐 Generate localhost API/Page URL and copy",
+}) ]]
+
+-- updaed for ignore group routes
+local function generate_app_url()
+	-- Get current file path
+	local file_path = vim.fn.expand("%:p") -- full path
+
+	-- Find the 'src/app' folder in the path
+	local app_index = file_path:find("src[/\\]app")
+	if not app_index then
+		print("Not an app file!")
+		return
+	end
+
+	-- Extract relative path inside src/app
+	local relative_path = file_path:sub(app_index + 8) -- skip 'src/app'
+	relative_path = relative_path:gsub("[/\\]", "/") -- normalize slashes
+
+	-- ✅ Case 1: API file
+	local api_index = file_path:find("src[/\\]app[/\\]api")
+	if api_index then
+		relative_path = file_path:sub(api_index + 8) -- skip 'src/app'
+		relative_path = relative_path:gsub("[/\\]route%.[jt]s$", "") -- remove '/route.js' or '/route.ts'
+		relative_path = relative_path:gsub("[/\\]", "/") -- normalize slashes
+		relative_path = relative_path:gsub("%[([%w_]+)%]", ":%1") -- [id] -> :id
+		relative_path = relative_path:gsub("%b()", "") -- remove group routes e.g. (dashboardLayout)
+
+		local url = "http://localhost:3000/" .. relative_path
+		print(url)
+		vim.fn.setreg("+", url)
+		return
+	end
+
+	-- ✅ Case 2: Page file
+	if relative_path:match("/page%.[jt]sx?$") then
+		relative_path = relative_path:gsub("/page%.[jt]sx?$", "") -- remove '/page.js/tsx'
+		relative_path = relative_path:gsub("%[([%w_]+)%]", ":%1") -- [id] -> :id
+		relative_path = relative_path:gsub("%b()", "") -- remove group routes e.g. (dashboardLayout)
+
+		if relative_path == "" then
+			relative_path = "/"
+		end
+		print(relative_path)
+		vim.fn.setreg("+", relative_path)
+		return
+	end
+
+	print("Not an API or page file!")
+end
+
+-- Map to leader + rp
+vim.keymap.set("n", "<leader>rp", generate_app_url, {
+	noremap = true,
+	silent = true,
+	desc = "🌐 Generate localhost API/Page URL and copy",
 })
+
 --w: 5╰───────────── Block End ─────────────╯

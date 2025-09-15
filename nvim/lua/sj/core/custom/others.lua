@@ -355,17 +355,17 @@ You are an expert job formatter.
 10. I’ve completed 5+ hands-on real-world MERN projects, built with scalable architecture and CLI workflow.  
     Here are my best examples:
 
-      🌐 DeshGuide – Tourism Management System  
+    🌐 DeshGuide – Tourism Management System  
     🔗 Live: https://deshguide.surge.sh
 
-    💼 WorkElevate – Job Portal  
-    🔗 Live: https://workelevate.surge.sh
+    🎓 EduVerse – Group Assignment Platform  
+    🔗 Live: https://edu-verse.surge.sh
 
     🧑‍🍳 FlavorBook – Recipe Sharing + Marketplace  
     🔗 Live: https://flavor-book.surge.sh
 
-    🎓 EduVerse – Group Assignment Platform  
-    🔗 Live: https://edu-verse.surge.sh
+    💼 WorkElevate – Job Portal  
+    🔗 Live: https://workelevate.surge.sh
 
     🖥️ My Portfolio (v2)  
     🔗 Live: https://shahjalal-labs.surge.sh
@@ -388,8 +388,9 @@ You are an expert job formatter.
 
 16. If any requirement looks vague, confusing, or a red flag, highlight it.
 
+17. If the job description requires an email application, draft a professional email of 100–150 words in a clear and formal tone. Do not use emojis. Exclude the closing signature since a professional one is already in place. Do not include personal links. Write the email body inside a code block, while placing the subject line and recipient (“To”) outside the code block. Highlight only MERN and Next.js skills, and avoid mentioning any other experience or skills.
 
-17. **Then generate a README-style markdown summary** using this exact structure in the markdown don't keep extra data. markdown summary strictly from ### number to down the job link line and the final --- :
+18. **Then generate a README-style markdown summary** using this exact structure in the markdown don't keep extra data. markdown summary strictly from ### number to down the job link line and the final --- :
 ```markdown
 ### ]] .. new_number .. [[ `🏢 Company Name — Job Title - onsite/remote - date with foramt: 31/12/25 - BDT salary`
 
