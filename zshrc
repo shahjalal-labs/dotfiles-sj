@@ -7,10 +7,13 @@ fi
 
 ZSH_THEME="powerlevel10k/powerlevel10k"  # Or any other theme of your choice
 
- source /run/media/sj/developer/zshScript/customFunction.sh
- source /run/media/sj/developer/zshScript/alias.sh
- source /run/media/sj/developer/zshScript/enviromentVariable.sh
+source /home/sj/dotfiles-sj/zshScript/customFunction.sh
+source /home/sj/dotfiles-sj/zshScript/alias.sh
+source /home/sj/dotfiles-sj/zshScript/enviromentVariable.sh
+
 # source /mnt/fed/secret.sh
+
+
 plugins=(
   git
 	zsh-syntax-highlighting 

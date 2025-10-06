@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-dir="/run/media/sj/developer/web/L1B11/1-amr-day-record/sessions"
+dir="/home/sj/web/1-amr-day-record/sessions"
 
 # Force English locale for consistent formatting
 day=$(LC_ALL=C date +%-d)
