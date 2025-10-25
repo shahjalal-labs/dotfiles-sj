@@ -17,7 +17,8 @@ alias tk='tmux kill-session -t '
 
 # alias a="exit"
 
-alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+# ---- Eza (better ls) -----
+alias ls="eza --icons=always"
 # alias ,='nvim .'
 alias c="nvim /home/sj/.config/nvim"
 alias p='systemctl --user restart pipewire && systemctl --user restart pipewire-pulse && systemctl --user daemon-reload'
@@ -51,7 +52,7 @@ alias rr='history | fzf | sed "s/^[ ]*[0-9]\+[ ]*//" | xargs -I {} bash -c "{}"'
 
 alias aa="npm install gh-pages --save-dev   &&  npx gh-pages -d .  && gh repo view --web"
 alias h="nvim ~/.config/hypr/hyprland.conf"
-alias a="nvim /run/media/sj/developer/zshScript/alias.sh"
+alias a="nvim /home/sj/dotfiles-sj/zshScript/alias.sh"
 alias m="sudo systemctl start mongodb"
 alias s="nvim /run/media/sj/developer/zshScript/.surfingkeys.js"
 alias bd="bun dev"

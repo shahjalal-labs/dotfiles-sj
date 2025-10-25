@@ -1,65 +1,46 @@
+#w: Enable tmux autostart
+export ZSH_TMUX_AUTOSTART="true"
+export ZSH_TMUX_AUTOSTART_ONCE="false" # Set to "true" to autostart only once per shell session
 
+# #p: Autostart tmux when opening a new terminal
+if [[ -z "$TMUX" ]]; then
+  # Check if tmux autostart is enabled
+  if [[ "$ZSH_TMUX_AUTOSTART" == "true" ]]; then
+    # Prevent multiple autostarts if ZSH_TMUX_AUTOSTART_ONCE is enabled
+    if [[ "$ZSH_TMUX_AUTOSTART_ONCE" == "false" || "$ZSH_TMUX_AUTOSTARTED" != "true" ]]; then
+      export ZSH_TMUX_AUTOSTARTED=true
+      tmux attach || tmux new
+    fi
+  fi
+fi
 
-
-#w: Enable tmux autostart  
- export ZSH_TMUX_AUTOSTART="true"  
- export ZSH_TMUX_AUTOSTART_ONCE="false"  # Set to "true" to autostart only once per shell session  
-
-# #p: Autostart tmux when opening a new terminal  
-if [[ -z "$TMUX" ]]; then  
-    # Check if tmux autostart is enabled  
-    if [[ "$ZSH_TMUX_AUTOSTART" == "true" ]]; then  
-        # Prevent multiple autostarts if ZSH_TMUX_AUTOSTART_ONCE is enabled  
-        if [[ "$ZSH_TMUX_AUTOSTART_ONCE" == "false" || "$ZSH_TMUX_AUTOSTARTED" != "true" ]]; then  
-            export ZSH_TMUX_AUTOSTARTED=true  
-            tmux attach || tmux new  
-        fi  
-    fi  
-fi  
-
-
-
-#clear pane with c-v 
+#clear pane with c-v
 
 function clear_terminal() {
-  clear  # This is the regular clear command
+  clear # This is the regular clear command
 }
-zle -N clear_terminal  # Register the function as a ZLE widget
+zle -N clear_terminal # Register the function as a ZLE widget
 bindkey '^V' clear_terminal
 
-
-
-
-# clear all the panes inside a window in tmux 
+# clear all the panes inside a window in tmux
 function clear_tmux_panes() {
   tmux list-panes -F "#{pane_id}" | xargs -I {} tmux send-keys -t {} "clear" C-m
 }
-zle -N clear_tmux_panes  # Register the function as a widget
+zle -N clear_tmux_panes # Register the function as a widget
 bindkey '^A' clear_tmux_panes
 
 alias cl="clear_tmux_panes"
 
-
-
-
-
-#copy pwd by c-e 
+#copy pwd by c-e
 copydir() {
   pwd | wl-copy
   echo "Copied: $(pwd)"
 }
 
-zle -N copydir  # Define it as a Zsh widget
-bindkey '^E' copydir  # Bind Ctrl+E to copy the current directory
+zle -N copydir       # Define it as a Zsh widget
+bindkey '^E' copydir # Bind Ctrl+E to copy the current directory
 
-
-
-
-
-
-
-
-#enter will run the last used command 
+#enter will run the last used command
 last_if_empty() {
   if [[ -z "$BUFFER" ]]; then
     zle up-history
@@ -69,41 +50,20 @@ last_if_empty() {
   fi
 }
 zle -N last_if_empty
- bindkey -M viins '^M' last_if_empty
-
-
-
-
-
-
+bindkey -M viins '^M' last_if_empty
 
 # Function to copy the last command and its output
 copy_last_command_and_output() {
-    {
-        cmd=$(fc -ln -1)
-        output=$(eval "$cmd" | sed 's/\x1B\[[0-9;]*m//g')
-        echo -e "Command: $cmd\nOutput:\n$output"
-    } | xclip -selection clipboard
+  {
+    cmd=$(fc -ln -1)
+    output=$(eval "$cmd" | sed 's/\x1B\[[0-9;]*m//g')
+    echo -e "Command: $cmd\nOutput:\n$output"
+  } | xclip -selection clipboard
 }
 # Register the function as a ZLE widget
 zle -N copy_last_command_and_output
 # Bind Ctrl+b to the widget
 bindkey '^Y' copy_last_command_and_output
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #
 # function show_zsh_keybindings() {
@@ -113,12 +73,6 @@ bindkey '^Y' copy_last_command_and_output
 # zle -N show_zsh_keybindings  # Register the function as a ZLE widget
 # bindkey '^M' show_zsh_keybindings  # Bind Ctrl+h to show Zsh keybindings
 #
-
-
-
-
-
-
 
 # # Function to send the current command to all tmux panes
 # send_current_command_to_all_panes() {
@@ -158,32 +112,31 @@ bindkey '^Y' copy_last_command_and_output
 # bindkey '^B' send_current_command_to_all_panes  # Ctrl+/
 #
 
-
 send_current_command_to_all_panes() {
-    # Get the current command line from the Zsh BUFFER
-    current_command="${BUFFER}"
+  # Get the current command line from the Zsh BUFFER
+  current_command="${BUFFER}"
 
-    # Get the active pane ID (where the user is typing)
-    active_pane=$(tmux display-message -p "#{pane_id}")
+  # Get the active pane ID (where the user is typing)
+  active_pane=$(tmux display-message -p "#{pane_id}")
 
-    # Loop through all tmux panes
-    tmux list-panes -F "#{pane_id}" | while read -r pane_id; do
-        # Skip the active pane
-        if [[ "$pane_id" == "$active_pane" ]]; then
-            continue
-        fi
+  # Loop through all tmux panes
+  tmux list-panes -F "#{pane_id}" | while read -r pane_id; do
+    # Skip the active pane
+    if [[ "$pane_id" == "$active_pane" ]]; then
+      continue
+    fi
 
-        # Check if Neovim is active in this pane
-        is_neovim=$(tmux capture-pane -t "$pane_id" -p | grep -q 'nvim' && echo "yes" || echo "no")
+    # Check if Neovim is active in this pane
+    is_neovim=$(tmux capture-pane -t "$pane_id" -p | grep -q 'nvim' && echo "yes" || echo "no")
 
-        # Skip sending the command if Neovim is detected
-        if [[ "$is_neovim" == "yes" ]]; then
-            continue
-        fi
+    # Skip sending the command if Neovim is detected
+    if [[ "$is_neovim" == "yes" ]]; then
+      continue
+    fi
 
-        # Send the command to the pane and execute it
-        tmux send-keys -t "$pane_id" "$current_command" C-m
-    done
+    # Send the command to the pane and execute it
+    tmux send-keys -t "$pane_id" "$current_command" C-m
+  done
 }
 
 # Register the function as a ZLE widget
@@ -192,10 +145,7 @@ zle -N send_current_command_to_all_panes
 # Bind the widget to Ctrl+B
 bindkey '^B' send_current_command_to_all_panes
 
-
-
-
-#git pushing dynamically 
+#git pushing dynamically
 
 git_push() {
   # Prompt for commit message (Zsh-friendly)
@@ -209,18 +159,14 @@ git_push() {
   fi
 
   # Execute the git commands sequentially
-  git add . && \
-  git commit -m "$commit_message" && \
-  git push -u origin main
+  git add . &&
+    git commit -m "$commit_message" &&
+    git push -u origin main
 }
 zle -N git_push_widget git_push
 # bindkey '^Q' git_push_widget
 
-
-
-
-
-#w: back up all the dotfiles 
+#w: back up all the dotfiles
 # backup_dotfiles() {
 #   # local backup_dir="/mnt/fed/allDotfilesBackup"
 #   local backup_dir="/run/media/sj/developer/allDotfilesBackupEndeavourOs"
@@ -255,18 +201,10 @@ backup_dotfiles() {
   rsync -a --delete /run/media/sj/developer/zshScript/ "$backup_dir/zshScript/"
   rsync -a --delete /home/sj/.config/tmux/ "$backup_dir/tmuxModularized/"
 
-
   echo "All dotfiles have been backed up and synced to $backup_dir."
 }
 
-
-
-
-
-
-
-
-# git push from any dir without need to cd 
+# git push from any dir without need to cd
 git_push2() {
   # Ensure the directory is provided
   if [[ -z "$1" ]]; then
@@ -301,11 +239,8 @@ git_push2() {
 }
 alias bb="backup_dotfiles && git_push2 /run/media/sj/developer/allDotfilesBackupEndeavourOs"
 
-
-
-
 #
-# #fancy ctrl y 
+# #fancy ctrl y
 # fancy-ctrl-y () {
 #   if [[ $#BUFFER -eq 0 ]]; then
 #     BUFFER="fg"
@@ -321,7 +256,7 @@ alias bb="backup_dotfiles && git_push2 /run/media/sj/developer/allDotfilesBackup
 #
 
 function init_git_project() {
-  echo "# chk" >> README.md
+  echo "# chk" >>README.md
   git init
   git add .
   git commit -m "first commit"
@@ -341,28 +276,24 @@ zle -N init_git_project_widget init_git_project
 # Bind Ctrl+p to the widget
 bindkey '^P' init_git_project_widget
 
-
 #sj repo fzf-repo-manager
 # Function to run fzf-repo-manager from /mnt/fed/zshScript
 function fzf_repo_manager {
-/run/media/sj/developer/zshScript/fzf-repo-manager.sh
+  /run/media/sj/developer/zshScript/fzf-repo-manager.sh
 }
 
 # Bind Ctrl+R to the function
-zle -N fzf_repo_manager  # Register the function as a Zsh widget
-bindkey '^U' fzf_repo_manager  # Bind Ctrl+R to it
-alias u=fzf_repo_manager;
-
-
-
+zle -N fzf_repo_manager       # Register the function as a Zsh widget
+bindkey '^U' fzf_repo_manager # Bind Ctrl+R to it
+alias u=fzf_repo_manager
 
 #fzf_repo_manager_level1
 
 # Function to run the fzf-repo-manager from /mnt/fed/zshScript
 function fzf_repo_manager_level1() {
 
-     # /mnt/fed/zshScript/fzf-repo-manager-level1.sh
-     /run/media/sj/developer/zshScript/fzf-repo-manager-level1.sh
+  # /mnt/fed/zshScript/fzf-repo-manager-level1.sh
+  /run/media/sj/developer/zshScript/fzf-repo-manager-level1.sh
 }
 
 # Register the function as a ZLE widget
@@ -372,12 +303,9 @@ zle -N fzf_repo_manager_level1
 bindkey '^Q' fzf_repo_manager_level1
 alias q=fzf_repo_manager_level1
 
-
-
-
 # Function to run the fzf-repo-manager from /mnt/fed/zshScript
 function fzf_repo_manager_level2() {
-    /run/media/sj/developer/zshScript/fzf-repo-manager-level2.sh
+  /run/media/sj/developer/zshScript/fzf-repo-manager-level2.sh
 }
 
 # Register the function as a ZLE widget
@@ -385,11 +313,9 @@ zle -N fzf_repo_manager_level2
 
 # Bind the widget to Ctrl+Q
 bindkey '^W' fzf_repo_manager_level2
-alias w=fzf_repo_manager_level2;
+alias w=fzf_repo_manager_level2
 
-
-
-# dir history M-j go back history, M-k go to parent , m-l go forward in history 
+# dir history M-j go back history, M-k go to parent , m-l go forward in history
 function dirhistory_zle_dirhistory_back() {
   zle .kill-buffer
   dirhistory_back
@@ -420,8 +346,6 @@ bindkey -M emacs "\ek" dirhistory_zle_dirhistory_up
 bindkey -M vicmd "\ek" dirhistory_zle_dirhistory_up
 bindkey -M viins "\ek" dirhistory_zle_dirhistory_up
 
-
-
 # Function to restore specific tmux layouts
 tr() {
   tmux select-layout -t 0 '8d8d,210x44,0,0[210x27,0,0,4,210x16,0,28{104x16,0,28,5,105x16,105,28,6}]'
@@ -429,9 +353,7 @@ tr() {
   tmux select-layout -t 3 '2ecf,210x44,0,0[210x32,0,0,10,210x11,0,33{107x11,0,33,11,102x11,108,33,12}]'
 }
 
-
-
-#tmux auto layout 
+#tmux auto layout
 # Function to set up tmux layout with alias `tla`
 tmux_layout() {
   # Create 3 windows (starting with 0, since tmux is 0-indexed)
@@ -443,7 +365,7 @@ tmux_layout() {
   tmux select-window -t 0
   tmux split-window -h  # Horizontal split
   tmux split-window -v  # Vertical split
-  tmux select-pane -t 0  # Focus the first pane in window 0
+  tmux select-pane -t 0 # Focus the first pane in window 0
 
   tmux select-window -t 1
   tmux split-window -h
@@ -473,13 +395,7 @@ tmux_layout() {
 # Create an alias for the function
 alias tla='tmux_layout'
 
-
-
-
-
-
-
- #p: Close all tmux panes except the active one
+#p: Close all tmux panes except the active one
 close_tmux_panes() {
   tmux list-panes -F "#{pane_id}" | grep -v "$(tmux display-message -p "#{pane_id}")" | xargs -I{} tmux kill-pane -t {}
 }
@@ -488,19 +404,16 @@ close_tmux_panes() {
 zle -N close_tmux_panes
 
 # Bind the widget to Alt + U
- bindkey '^[u' close_tmux_panes
-
+bindkey '^[u' close_tmux_panes
 
 function b() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
 }
-
-
 
 tmux_setup() {
   # Prompt for session name
@@ -521,7 +434,7 @@ tmux_setup() {
   tmux select-window -t 0
   tmux split-window -h  # Horizontal split
   tmux split-window -v  # Vertical split
-  tmux select-pane -t 0  # Focus the first pane in window 0
+  tmux select-pane -t 0 # Focus the first pane in window 0
 
   tmux select-window -t 1
   tmux split-window -h
@@ -548,7 +461,6 @@ tmux_setup() {
   tmux select-pane -t 0
 }
 
-
 tmux_setup2() {
   # Prompt for session name
   echo "Enter session name:"
@@ -556,7 +468,7 @@ tmux_setup2() {
 
   # Create a new tmux session
   tmux new-session -s "$SESSION_NAME" -d
-  sleep 1  # Small delay to ensure the session is created before proceeding
+  sleep 1 # Small delay to ensure the session is created before proceeding
 
   # Create new windows
   tmux new-window -t 0 -n 'Window-1'
@@ -570,7 +482,7 @@ tmux_setup2() {
   tmux select-window -t 0
   tmux split-window -h  # Horizontal split
   tmux split-window -v  # Vertical split
-  tmux select-pane -t 0  # Focus the first pane in window 0
+  tmux select-pane -t 0 # Focus the first pane in window 0
   sleep 1
 
   tmux select-window -t 1
@@ -627,65 +539,54 @@ nvim_cd_all() {
 # Alias for convenience
 alias ,="nvim_cd_all"
 
-
 #w: 21/12/2024 01:27 PM Sat GMT+6 Sharifpur, Gazipur, Dhaka
-# 
-#p: tmux creating session  ,, sess "name of the session "  example:  sess cfg 
+#
+#p: tmux creating session  ,, sess "name of the session "  example:  sess cfg
 sess() {
-    if [ -z "$1" ]; then
-        echo -n "Enter session name: "
-        read session_name
-    else
-        session_name=$1
-    fi
-    tmux new-session -d -s "$session_name" && tmux switch-client -t "$session_name"
+  if [ -z "$1" ]; then
+    echo -n "Enter session name: "
+    read session_name
+  else
+    session_name=$1
+  fi
+  tmux new-session -d -s "$session_name" && tmux switch-client -t "$session_name"
 }
 
-
-
-
-
-#w: Cursor shape change for normal mode and insert mode in vi mode  
+#w: Cursor shape change for normal mode and insert mode in vi mode
 
 function zle-keymap-select {
-    if [[ ${KEYMAP} == vicmd ]] || [[ $1 == 'block' ]]; then
-        echo -ne '\e[1 q'  # Block cursor (normal mode)
-    else
-        echo -ne '\e[5 q'  # Beam cursor (insert mode)
-    fi
+  if [[ ${KEYMAP} == vicmd ]] || [[ $1 == 'block' ]]; then
+    echo -ne '\e[1 q' # Block cursor (normal mode)
+  else
+    echo -ne '\e[5 q' # Beam cursor (insert mode)
+  fi
 }
 
-zle -N zle-keymap-select  
+zle -N zle-keymap-select
 
 function zle-line-finish {
-    echo -ne '\e[5 q'  # Beam cursor after command execution
+  echo -ne '\e[5 q' # Beam cursor after command execution
 }
 
-zle -N zle-line-finish  
+zle -N zle-line-finish
 
 # Set beam cursor at the start
-echo -ne '\e[5 q'  
+echo -ne '\e[5 q'
 
-
-
-
-
-
-#w: function for fzf command history                                                                                                                                                                  
+#w: function for fzf command history
 # fzf history search with Alt+R
 
 rr() {
-    local selected
-    selected=$(fc -l 1 | fzf --tac --no-sort +m -n 2.. | awk '{$1=""; print substr($0,2)}')
-    if [[ -n "$selected" ]]; then
-        eval "$selected"
-    fi
+  local selected
+  selected=$(fc -l 1 | fzf --tac --no-sort +m -n 2.. | awk '{$1=""; print substr($0,2)}')
+  if [[ -n "$selected" ]]; then
+    eval "$selected"
+  fi
 }
 
 alias rr=rr
 
 # alias rr=fzf-history-widget
-
 
 fzf_history_search() {
   # Save command list without line numbers
@@ -700,20 +601,19 @@ fzf_history_search() {
 zle -N fzf_history_search
 bindkey '^R' fzf_history_search
 
-
 r() {
-    local tempfile="$(mktemp -t tmp.XXXXXX)"
-    command ranger \
-        --cmd="map q chain shell echo %d > \"$tempfile\"; quitall" \
-        --cmd="map Q quitall" \
-        "$@"
-    
-    if [[ -f "$tempfile" ]] && [[ -s "$tempfile" ]]; then
-        local ranger_cwd="$(cat "$tempfile")"
-        if [[ -n "$ranger_cwd" ]] && [[ -d "$ranger_cwd" ]]; then
-            cd "$ranger_cwd"
-        fi
+  local tempfile="$(mktemp -t tmp.XXXXXX)"
+  command ranger \
+    --cmd="map q chain shell echo %d > \"$tempfile\"; quitall" \
+    --cmd="map Q quitall" \
+    "$@"
+
+  if [[ -f "$tempfile" ]] && [[ -s "$tempfile" ]]; then
+    local ranger_cwd="$(cat "$tempfile")"
+    if [[ -n "$ranger_cwd" ]] && [[ -d "$ranger_cwd" ]]; then
+      cd "$ranger_cwd"
     fi
-    
-    command rm -f "$tempfile" 2>/dev/null
+  fi
+
+  command rm -f "$tempfile" 2>/dev/null
 }

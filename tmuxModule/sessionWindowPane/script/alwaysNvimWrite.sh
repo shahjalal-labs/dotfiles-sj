@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SESSION="alwaysNvim"
-FILE="/run/media/sj/developer/web/L1B11/textNvim.md"
+FILE="/home/sj/drafts/vi_drafts.md"
 
 # Check if tmux session exists
 if ! tmux has-session -t "$SESSION" 2>/dev/null; then
