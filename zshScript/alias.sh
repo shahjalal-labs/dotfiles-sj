@@ -29,7 +29,7 @@ alias ms="nmcli device disconnect enp0s20f0u1"
 alias ms2="nmcli device disconnect enp0s20f0u10"
 
 # Alias to reconnect modem
-alias mc="nmcli device connect enp0s20f0u1"
+# alias mc="nmcli device connect enp0s20f0u1"
 alias mc2="nmcli device connect enp0s20f0u10"
 
 alias de='nmcli device connect enp1s0'
@@ -64,7 +64,3 @@ alias cb="~/.local/bin/hypr_clipboard_manager.sh"
 # alias rn="ranger"
 
 alias f="n /run/media/sj/developer/zshScript/customFunction.sh"
-
-
-
-
