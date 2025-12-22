@@ -6,20 +6,28 @@
 │   └── browser.conf
 ├── customBingdings.conf
 ├── gitGithub
+│   └── gitGithub.conf
 ├── mernWeb
-│   └── mernWeb.conf
+│   ├── mernWeb.conf
+│   └── npmScript
+│       └── npmScript.conf
 ├── README.md
 ├── sessionWindowPane
 │   ├── pane.conf
 │   ├── script
+│   │   ├── alwaysNvimWrite.sh
 │   │   ├── tmux-create-session.sh
-│   │   └── tmux-kill-session-safe.sh
+│   │   ├── tmux-kill-session-safe.sh
+│   │   └── tmux-switch-third.sh
 │   ├── session.conf
 │   └── window.conf
 ├── settings.conf
-└── tmuxShellScript
-    └── tmuxKillPane.sh
+├── structure.md
+├── tmuxShellScript
+│   ├── tmuxKillPane.sh
+│   └── tmux_send_c_c.sh
+└── tmuxZshCli
 
-7 directories, 11 files
+9 directories, 17 files
 
 ```
