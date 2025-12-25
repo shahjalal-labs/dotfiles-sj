@@ -617,3 +617,29 @@ r() {
 
   command rm -f "$tempfile" 2>/dev/null
 }
+
+#w: (start)╭────────────   ────────────╮
+
+dev() {
+  LOG_FILE="$HOME/dev.log"
+  [ -f "$LOG_FILE" ] && rm "$LOG_FILE"
+  [ -f "$LOG_FILE.opened" ] && rm "$LOG_FILE.opened"
+
+  # Start npm dev in foreground, tee logs to terminal and file
+  npm run dev 2>&1 | while IFS= read -r line; do
+    echo "$line" # print logs in real-time
+
+    # Extract only BullMQ dashboard URL
+    URL=$(echo "$line" | grep -o 'http://localhost:[0-9]\+/admin/queues')
+    if [ -n "$URL" ]; then
+      # Open only once
+      if ! grep -q "$URL" "$LOG_FILE.opened" 2>/dev/null; then
+        echo "Opening BullMQ dashboard in browser..."
+        xdg-open "$URL"
+        echo "$URL" >>"$LOG_FILE.opened"
+      fi
+    fi
+  done
+}
+
+#w: (end)  ╰────────────   ────────────╯
