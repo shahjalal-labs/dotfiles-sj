@@ -3,16 +3,16 @@ export ZSH_TMUX_AUTOSTART="true"
 export ZSH_TMUX_AUTOSTART_ONCE="false" # Set to "true" to autostart only once per shell session
 
 # #p: Autostart tmux when opening a new terminal
-if [[ -z "$TMUX" ]]; then
-  # Check if tmux autostart is enabled
-  if [[ "$ZSH_TMUX_AUTOSTART" == "true" ]]; then
-    # Prevent multiple autostarts if ZSH_TMUX_AUTOSTART_ONCE is enabled
-    if [[ "$ZSH_TMUX_AUTOSTART_ONCE" == "false" || "$ZSH_TMUX_AUTOSTARTED" != "true" ]]; then
-      export ZSH_TMUX_AUTOSTARTED=true
-      tmux attach || tmux new
-    fi
-  fi
-fi
+# if [[ -z "$TMUX" ]]; then
+#   # Check if tmux autostart is enabled
+#   if [[ "$ZSH_TMUX_AUTOSTART" == "true" ]]; then
+#     # Prevent multiple autostarts if ZSH_TMUX_AUTOSTART_ONCE is enabled
+#     if [[ "$ZSH_TMUX_AUTOSTART_ONCE" == "false" || "$ZSH_TMUX_AUTOSTARTED" != "true" ]]; then
+#       export ZSH_TMUX_AUTOSTARTED=true
+#       tmux attach || tmux new
+#     fi
+#   fi
+# fi
 
 #clear pane with c-v
 
