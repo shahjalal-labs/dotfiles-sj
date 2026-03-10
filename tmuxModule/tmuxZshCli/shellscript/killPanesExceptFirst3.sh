@@ -15,3 +15,6 @@ for pane in $panes; do
     tmux kill-pane -t "$id"
   fi
 done
+
+# Run tr function in pane 2 (index 2)
+tmux send-keys -t 2 'tr' C-m
