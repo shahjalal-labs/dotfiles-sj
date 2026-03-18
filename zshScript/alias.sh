@@ -1,6 +1,11 @@
 alias l="nvim ~/.config/nvim/init.lua"
 alias y="yazi"
+
+# start keyd service
 alias ss="sudo systemctl restart keyd"
+# Stop keyd service
+alias sk='sudo systemctl stop keyd'
+
 alias n="nvim"
 alias v='nvim ~/.zshrc'
 

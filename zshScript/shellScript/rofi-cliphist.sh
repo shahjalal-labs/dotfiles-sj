@@ -1,8 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-selected=$(cliphist list | rofi -dmenu -i -p "📋 Clipboard" | cut -d' ' -f1)
-
-if [[ -n "$selected" ]]; then
-  cliphist decode "$selected" | wl-copy --type text/plain
-  # notify-send "✅ Copied to clipboard"
-fi
+cliphist list | rofi -dmenu -i -p "Clipboard  📋" | cliphist decode | wl-copy
+#
+#cliphist list | rofi -dmenu -i -matching fuzzy -sorting-method fzf
