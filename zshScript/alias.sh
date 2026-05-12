@@ -69,3 +69,5 @@ alias cb="~/.local/bin/hypr_clipboard_manager.sh"
 # alias rn="ranger"
 
 alias f="n /run/media/sj/developer/zshScript/customFunction.sh"
+
+alias rgg="sudo systemctl restart gdm3"

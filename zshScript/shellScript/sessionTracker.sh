@@ -1,6 +1,7 @@
 #!/bin/zsh
 
-dir="/home/sj/web/1-amr-day-record/sessions"
+
+dir="/home/sj/system_track/sessions"
 
 # Force English locale for consistent formatting
 day=$(LC_ALL=C date +%-d)
