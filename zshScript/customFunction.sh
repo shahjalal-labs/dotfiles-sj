@@ -148,21 +148,21 @@ bindkey '^B' send_current_command_to_all_panes
 #git pushing dynamically
 
 git_push() {
-  # Prompt for commit message (Zsh-friendly)
   echo -n "Enter commit message: "
   read commit_message
 
-  # Ensure commit message is not empty
   if [[ -z "$commit_message" ]]; then
     echo "Commit message cannot be empty. Aborting."
     return 1
   fi
 
-  # Execute the git commands sequentially
   git add . &&
     git commit -m "$commit_message" &&
-    git push -u origin main
+    git push -u origin HEAD &&
+    git push -u labs HEAD
 }
+###
+
 zle -N git_push_widget git_push
 # bindkey '^Q' git_push_widget
 
