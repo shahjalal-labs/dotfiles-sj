@@ -1,0 +1,27 @@
+/**
+ * Night Modern Color Palette
+ * Designed for Tokyo Night / Cyan Night Aesthetic
+ **/
+
+* {
+    /* Backgrounds */
+    bg:                          #0b0f16f2; /* Deep dark slate with subtle translucency */
+    bg-solid:                    #0b0f16;   /* Solid night black */
+    bg-alt:                      #141c28;   /* Elevated surface (inputbar, containers) */
+    bg-selected:                 #1b283d;   /* Selected item background */
+    bg-hover:                    #162234;   /* Hover / subtle state */
+
+    /* Borders */
+    border-color:                #38bdf8;   /* Glowing cyan border matching Hyprland */
+    border-subtle:               #223249;   /* Subtle divider / border */
+
+    /* Foreground / Text */
+    fg:                          #cbe0f0;   /* Primary crisp text */
+    fg-muted:                    #627e97;   /* Secondary / muted text */
+    fg-dim:                      #3d5166;   /* Darkest muted text */
+
+    /* Accents */
+    accent:                      #38bdf8;   /* Cyan highlight */
+    accent-mint:                 #00ff99;   /* Mint green match highlight */
+    urgent:                      #f7768e;   /* Red / urgent */
+}

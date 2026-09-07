@@ -1,0 +1,20 @@
+/**
+ * Global Rofi Configuration
+ **/
+
+configuration {
+    font:                        "JetBrainsMono Nerd Font 13";
+    show-icons:                  false;
+    terminal:                    "kitty";
+    drun-match-fields:           "name,generic,exec,categories,keywords";
+    matching:                    "fuzzy";
+    sorting-method:              "fzf";
+
+    /* Vim navigation bindings (C-j: down, C-k: up) */
+    kb-remove-to-eol:            "";
+    kb-accept-entry:             "Control+m,Return,KP_Enter";
+    kb-row-up:                   "Up,Control+p,Control+k";
+    kb-row-down:                 "Down,Control+n,Control+j";
+}
+
+@theme "clipboard"
