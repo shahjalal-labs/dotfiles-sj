@@ -33,6 +33,15 @@ Each line represents a time I invoked my productivity ritual.
 EOF
 fi
 
+# Ensure daily sessionCheck file exists (d-m-yy format)
+check_file="$folder/${date_slug}-sessionCheck.md"
+template_checklist="/home/sj/system_track/sessions/May26/empty_checklist.md"
+[[ ! -f "$template_checklist" ]] && template_checklist="/home/sj/system_track/sessions/empty_checklist.md"
+
+if [[ ! -f "$check_file" && -f "$template_checklist" ]]; then
+  cp "$template_checklist" "$check_file"
+fi
+
 # Get last session number
 last_line_num=$(grep -E '^[0-9]+\.' "$file" | tail -n 1 | cut -d. -f1)
 if [[ -z "$last_line_num" ]]; then

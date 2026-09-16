@@ -111,11 +111,12 @@ Your contributions, suggestions, and feedback are **always welcome**!
 
 ## 📞 **Connect with Me**
 
-| 💻 Platform     | 🔗 Link                                                           |
-| --------------- | ----------------------------------------------------------------- |
-| 🐙 **GitHub**   | [shahjalal-labs](https://github.com/shahjalal-labs)               |
-| 🔗 **LinkedIn** | [Md. Shahjalal](https://www.linkedin.com/in/shahjalal-labs/)      |
-| 📧 **Email**    | [muhommodshahjalal@gmail.com](mailto:muhommodshahjalal@gmail.com) |
+| 💻 Platform | 🔗 Link |
+| ----------- | ------- |
+
+| 🐙 **GitHub** | [shahjalal-labs](https://github.com/shahjalal-labs) |
+| 🔗 **LinkedIn** | [Md. Shahjalal](https://www.linkedin.com/in/shahjalal-labs/) |
+| 📧 **Email** | [muhommodshahjalal@gmail.com](mailto:muhommodshahjalal@gmail.com) |
 
 ---
 
