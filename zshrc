@@ -1,3 +1,5 @@
+export PATH="$HOME/.npm-global/bin:$PATH"
+export PATH="/usr/bin:$PATH"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -63,14 +65,30 @@ export PATH="$PATH:/home/sj/.local/bin"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# for enabling ranger as file picker
-export XDG_CURRENT_DESKTOP=Hyprland
-export XDG_SESSION_TYPE=wayland
-export XDG_SESSION_DESKTOP=Hyprland
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+
+export WAYLAND_DISPLAY=wayland-1
+export PATH=~/.npm-global/bin:$PATH
+export PATH=~/.npm-global/bin:$PATH
+
+# OpenClaw Completion
+[ -f "/home/sj/.openclaw/completions/openclaw.zsh" ] && source "/home/sj/.openclaw/completions/openclaw.zsh"
+
+# >>> localcan >>>
+export PATH="/home/sj/.localcan/bin:$PATH"
+# <<< localcan <<<
+
+# opencode
+export PATH=/home/sj/.opencode/bin:$PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/sj/.local/bin:$PATH"
+
 # Zoxide initialization
 eval "$(zoxide init zsh)"
+export GEMINI_API_KEY="AIzaSyCTuTXZB__binAROvalrqiwgScgF0jWttA"
+export GTK_USE_PORTAL=1

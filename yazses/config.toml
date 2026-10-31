@@ -1,0 +1,52 @@
+# YazSes configuration (created on first run).
+# The recommended feature set is enabled below. Toggle anything with
+#   yazses features enable <name>   /   yazses features disable <name>
+
+[commands]
+enabled = true
+
+[revise]
+enabled = true
+
+[overlay]
+enabled = true
+
+[tray]
+enabled = true
+
+[injection]
+target_guard = "off"
+
+[audio]
+silent_streak_notify = true
+device_change_notify = true
+
+[accessibility]
+dysfluency_friendly = true
+
+[checkdigit]
+enabled = true
+
+[focusprofile]
+enabled = true
+
+[timeline]
+enabled = true
+
+[compute]
+enabled = true
+
+[corrdict]
+enabled = true
+
+[verbatim]
+enabled = true
+
+[spelling]
+enabled = true
+
+[latency]
+enabled = true
+
+[cmdsafety]
+enabled = true
